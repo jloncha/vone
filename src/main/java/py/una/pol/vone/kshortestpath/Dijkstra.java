@@ -3,10 +3,8 @@ package py.una.pol.vone.kshortestpath;
 /**
  * Created by brandonsmock on 6/1/15.
  */
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.PriorityQueue;
-import java.util.Set;
+import java.util.*;
+import edu.ufl.cise.bsmock.graph.*;
 
 public final class Dijkstra {
 
