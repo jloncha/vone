@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import aco.ant.Ant;
 import py.una.pol.vone.simulator.model.SustrateNetwork;
 import py.una.pol.vone.simulator.model.VirtualNetwork;
 
@@ -103,7 +102,7 @@ public abstract class ACO implements Observer{
 		return ++idInteracion > interations;
 	}
 	
-	@Override
+	/*@Override
 	public synchronized void update(Observable observable, Object obj) {
 		Ant ant = (Ant) obj;
 
@@ -119,7 +118,7 @@ public abstract class ACO implements Observer{
 			finishedAnts = 0;
 			notify();
 		}
-	}
+	}*/
 
 	public List<Ant> getAnt() {
 		return ant;
