@@ -101,24 +101,27 @@ public abstract class ACO implements Observer{
 	private boolean terminationCondition() {
 		return ++idInteracion > interations;
 	}
-	
-	/*@Override
+	/***
+	 * La parte de la evaluacion depende del problema que estemos
+	 * abarcando, tenemos que adaptar para el VONE
+	 */
+	@Override
 	public synchronized void update(Observable observable, Object obj) {
 		Ant ant = (Ant) obj;
 
-		ant.setTourLength(tourLength);
-		ant.tourLength = p.evaluate(ant);
+		ant.setTourLength(1); //Cambiar por la parte de evaluar que corresponde a nuestro problema
+		//ant.tourLength = p.evaluate(ant);
 
-		if (p.better(ant, bestAnt)) {
+		/*if (p.better(ant, bestAnt)) {
 			bestAnt = ant.clone();
-		}
+		}*/
 
 		if (++finishedAnts == numberOfAnts) {
 			// Continue all execution
 			finishedAnts = 0;
 			notify();
 		}
-	}*/
+	}
 
 	public List<Ant> getAnt() {
 		return ant;
