@@ -9,6 +9,10 @@ public class Edge implements Cloneable {
    private String fromNode;
    private String toNode;
    private double weight;
+   
+ //****************propios del problema rmsa con elastic network
+   private int cantidadFS;
+   private boolean[] frequencySlot;
 
    public Edge() {
        this.fromNode = null;
@@ -45,12 +49,32 @@ public class Edge implements Cloneable {
    public void setWeight(double weight) {
        this.weight = weight;
    }
+   
+   
 
    public Edge clone() {
        return new Edge(fromNode, toNode, weight);
    }
+   
+   
 
-   public String toString() {
+   public int getCantidadFS() {
+	return cantidadFS;
+   }
+
+	public void setCantidadFS(int cantidadFS) {
+		this.cantidadFS = cantidadFS;
+	}
+	
+	public boolean[] getFrequencySlot() {
+		return frequencySlot;
+	}
+	
+	public void setFrequencySlot(boolean[] frequencySlot) {
+		this.frequencySlot = frequencySlot;
+	}
+
+	public String toString() {
        StringBuilder sb = new StringBuilder();
        sb.append("(");
        sb.append(fromNode);
@@ -58,7 +82,15 @@ public class Edge implements Cloneable {
        sb.append(toNode);
        sb.append("){");
        sb.append(weight);
-       sb.append("}");
+       sb.append("},");
+       sb.append("(");
+       sb.append(cantidadFS);
+       sb.append("),(");
+       for (boolean b : frequencySlot) {
+    	   sb.append(String.valueOf(b));
+    	   sb.append(",");
+       }
+       sb.append(")");
 
        return sb.toString();
    }

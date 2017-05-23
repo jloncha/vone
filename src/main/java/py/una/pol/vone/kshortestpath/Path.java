@@ -11,6 +11,8 @@ import java.util.List;
 public class Path implements Cloneable, Comparable<Path> {
     private LinkedList<Edge> edges;
     private double totalCost;
+    private boolean[][] caminos;
+    private boolean[][] vecinos;
 
     public Path() {
         edges = new LinkedList<Edge>();
@@ -39,11 +41,27 @@ public class Path implements Cloneable, Comparable<Path> {
         return edges;
     }
 
-    public void setEdges(LinkedList<Edge> edges) {
+	public void setEdges(LinkedList<Edge> edges) {
         this.edges = edges;
     }
 
-    public List<String> getNodes() {
+    public boolean[][] getCaminos() {
+		return caminos;
+	}
+
+	public void setCaminos(boolean[][] caminos) {
+		this.caminos = caminos;
+	}
+
+	public boolean[][] getVecinos() {
+		return vecinos;
+	}
+
+	public void setVecinos(boolean[][] vecinos) {
+		this.vecinos = vecinos;
+	}
+
+	public List<String> getNodes() {
         LinkedList<String> nodes = new LinkedList<String>();
 
         for (Edge edge : edges) {
