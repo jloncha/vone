@@ -8,3 +8,4 @@
 # generated files
 bin/
 gen/
+target/*
