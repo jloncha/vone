@@ -31,7 +31,7 @@ public class TestYen {
         int K;
 
         /* Example 1 */
-        graphFilename = "src/main/java/py/una/pol/vone/kshortestpath/tiny_graph_01.txt";
+        graphFilename = "src/main/resources/grafos/tiny_graph_01.txt";
         sourceNode = "0";
         targetNode = "3";
         K = 2;
