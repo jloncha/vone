@@ -1,34 +1,38 @@
 package py.una.pol.vone.sa;
 
-import py.una.pol.vone.simulator.model.SustrateNode;
-import py.una.pol.vone.simulator.model.VirtualNode;
-
+import java.util.List;
 /**
- * Clase que representa una solucion
- * Nodo Virtual a Fisico
+ * Clase que representa las soluciones del problema
  * @author Jean
  *
  */
+
 public class Solution {
-	private VirtualNode virtualNode;
-	private SustrateNode sustrateNode;
+	private List<Mapping> map;
+	private Integer frecuencyUsed;
+	private Integer cpuUsed;
 	
-	public Solution(VirtualNode virtualNode, SustrateNode sustrateNode) {
+	public Solution() {
 		super();
-		this.virtualNode = virtualNode;
-		this.sustrateNode = sustrateNode;
 	}
-	public VirtualNode getVirtualNode() {
-		return virtualNode;
+	public List<Mapping> getMap() {
+		return map;
 	}
-	public void setVirtualNode(VirtualNode virtualNode) {
-		this.virtualNode = virtualNode;
+	public void setMap(List<Mapping> map) {
+		this.map = map;
 	}
-	public SustrateNode getSustrateNode() {
-		return sustrateNode;
+	public Integer getFrecuencyUsed() {
+		return frecuencyUsed;
 	}
-	public void setSustrateNode(SustrateNode sustrateNode) {
-		this.sustrateNode = sustrateNode;
+	public void setFrecuencyUsed(Integer frecuencyUsed) {
+		this.frecuencyUsed = frecuencyUsed;
 	}
+	public Integer getCpuUsed() {
+		return cpuUsed;
+	}
+	public void setCpuUsed(Integer cpuUsed) {
+		this.cpuUsed = cpuUsed;
+	}
+	
 	
 }

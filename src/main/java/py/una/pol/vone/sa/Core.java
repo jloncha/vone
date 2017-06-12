@@ -21,7 +21,7 @@ public class Core {
 	private SustrateNetwork sustrateNetwork;
 	private List<VirtualNode> nodesToMap;
 	private List<SustrateNode> phisicalNodes;
-	private List<Solution> bestSolution;
+	private Solution bestSolution;
 	private Tree<VirtualNode> VNTree;
 	private VirtualNode actualVN;
 	private SustrateNode actualSN;
@@ -39,7 +39,7 @@ public class Core {
 		this.sustrateNetwork = sustrateNetwork;
 		this.nodesToMap = this.virtualRequest.getNodosVirtuales();
 		this.phisicalNodes = this.sustrateNetwork.getNodosFisicos();
-		this.bestSolution = new ArrayList<Solution>();
+		this.bestSolution = new Solution();
 		
 	}
 
@@ -144,16 +144,18 @@ public class Core {
 				//Una vez obtenidos los precandidatos se procede a elegir uno completamente al azar
 				actualSN = preCandidates.get(randonGenerator.nextInt(preCandidates.size()));
 				//Guardamos la solucion
-				Solution solucion = new Solution(nodoVirtual, actualSN);
-				bestSolution.add(solucion);		
+				Mapping firstMap = new Mapping(nodoVirtual, actualSN);
+				bestSolution.getMap().add(firstMap);
 			}else{
 			//Si no corresponde a la Raiz se procede a selecionar vecinos
+				SustrateNode beforeNode = new SustrateNode();
+				beforeNode = sustratePath.get(sustratePath.size()-1);
 				
 			}
-			
 		}catch (Exception ex){
 			ex.printStackTrace();
 		}
 		
 	}
+	
 }
