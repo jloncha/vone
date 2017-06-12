@@ -14,6 +14,5 @@ public class App
         CargarRed red = new CargarRed();
         Core problema = new Core(red.redVirtual, red.redFisica);
 		problema.generateFirstSolution();
-
     }
 }
