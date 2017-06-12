@@ -15,8 +15,8 @@ public class CargarRed {
 	
 	public CargarRed() {
 		VirtualNode nodo1 = new VirtualNode("A",0, 10);
-		VirtualNode nodo2 = new VirtualNode("B",1, 10);
-		VirtualNode nodo3 = new VirtualNode("C",2, 10);
+		VirtualNode nodo2 = new VirtualNode("B",1, 7);
+		VirtualNode nodo3 = new VirtualNode("C",2, 11);
 		VirtualEdge enlace1 = new VirtualEdge(4, "A-B", 50);
 		VirtualEdge enlace2 = new VirtualEdge(5, "B-C", 50);
 		VirtualEdge enlace3 = new VirtualEdge(6, "C-A", 50);
@@ -49,6 +49,12 @@ public class CargarRed {
 		enlace2.setNodoDos(nodo3);
 		enlace3.setNodoUno(nodo1);
 		enlace3.setNodoDos(nodo3);
+		nodo1.getAdyacentes().add(enlace1);
+		nodo1.getAdyacentes().add(enlace3);
+		nodo2.getAdyacentes().add(enlace1);
+		nodo2.getAdyacentes().add(enlace2);
+		nodo3.getAdyacentes().add(enlace2);
+		nodo3.getAdyacentes().add(enlace3);
 		enlaces.add(enlace1);
 		enlaces.add(enlace2);
 		enlaces.add(enlace3);
@@ -72,7 +78,7 @@ public class CargarRed {
 		this.redVirtual.setEnlacesVirtuales(enlaces);
 		this.redVirtual.setNodosVirtuales(nodos);
 		
-		this.redFisica = new SustrateNetwork(1, "SN");
+		this.redFisica = new SustrateNetwork();
 		this.redFisica.setNodosFisicos(nodosF);
 		this.redFisica.setEnlacesFisicos(enlacesF);
 	}
