@@ -3,6 +3,8 @@ package py.una.pol.vone.rmsa;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.ValidationException;
+
 import py.una.pol.vone.kshortestpath.Path;
 import py.una.pol.vone.simulator.model.SustrateEdge;
 import py.una.pol.vone.simulator.model.SustrateNetwork;
@@ -88,34 +90,40 @@ public class CutRmsa {
      * @param slotRequerido cantidad de slot que requiere el request
      * @return List<Integer> indices de los espacios disponibles, null en caso de que no se pueda mapear
      * lo requerido
+	 * @throws ValidationException 
      */
-	public static List<Integer> indicesDisponiblesPath(boolean matrizPath[][], int slotRequerido){
+	public static List<Integer> indicesDisponiblesPath(boolean matrizPath[][], int slotRequerido)
+				throws ValidationException{
 		List<Integer> indices = new ArrayList<Integer>();
-		List<Integer> aEliminar = new ArrayList<>();
-		boolean band = false;
-		int recorrible = matrizPath.length - slotRequerido;
-		if(matrizPath.length < slotRequerido){
-			return null;
-		}
-		for (int i = 0; i <= recorrible; i++) {
-			band = false;
-			for (int j = i; j <= i + slotRequerido - 1; j++) {
-				for (int k = 0; k < matrizPath[i].length; k++) {
-					if(matrizPath[j][k] == true){
-						band = true;
+			List<Integer> aEliminar = new ArrayList<>();
+			boolean band = false;
+			int recorrible = matrizPath.length - slotRequerido;
+			if(matrizPath.length < slotRequerido){
+				throw new ValidationException("La cantidad de Slot requerido es mayor al disponible");
+			}
+			for (int i = 0; i <= recorrible; i++) {
+				band = false;
+				for (int j = i; j <= i + slotRequerido - 1; j++) {
+					for (int k = 0; k < matrizPath[i].length; k++) {
+						if(matrizPath[j][k] == true){
+							band = true;
+						}
 					}
 				}
+				if(!band){
+					indices.add(i);
+				}
 			}
-			if(!band){
-				indices.add(i);
+			aEliminar = eliminarContiguos(indices, slotRequerido);
+			for (int i = 0; i < aEliminar.size(); i++) {
+				if(indices.contains(aEliminar.get(i))){
+					indices.remove(indices.indexOf(aEliminar.get(i)));
+				}
 			}
-		}
-		aEliminar = eliminarContiguos(indices, slotRequerido);
-		for (int i = 0; i < aEliminar.size(); i++) {
-			if(indices.contains(aEliminar.get(i))){
-				indices.remove(indices.indexOf(aEliminar.get(i)));
+			if(indices.size() == 0){
+				throw new ValidationException("Sin indices disponibles para el corte");
 			}
-		}
+		
 		return indices;
 	}
 	
@@ -127,8 +135,13 @@ public class CutRmsa {
      * @param lista lista de indices disponibles para mapear la solicitud
      * @param slotRequerido cantidad de slot que requiere el request
      * @return List<Integer> indices sin los elementos contiguos superiores
+     * @throws ValidationException
      */
-	public static List<Integer> eliminarContiguos(List<Integer> lista, int slotRequerido){
+	public static List<Integer> eliminarContiguos(List<Integer> lista, int slotRequerido) 
+			throws ValidationException{
+		if(lista.size() == 0){
+			throw new ValidationException("No se encontraron elementos para el corte");
+		}
 		List<Integer> aEliminar = new ArrayList<>();
 		for (int i = 0; i < lista.size() - 1; i++) {
 			for (int j = i + 1; j < lista.size(); j++) {
@@ -153,8 +166,10 @@ public class CutRmsa {
      * @param path matriz[][] que representa el camino completo con los slots disponibles
      * @param indiceCortes representa los indices de los paths que debe calcular el valor de corte
      * @return List<Integer> valor del corte por indice
+     * @throws ValidationException
      */
-	public static List<Integer> calcularValorCorte(boolean[][] path, List<Integer> indiceCortes){
+	public static List<Integer> calcularValorCorte(boolean[][] path, List<Integer> indiceCortes)
+					throws ValidationException{
 		List<Integer> valoresCortesPorIndice = new ArrayList<>();
 		int cont = 0;
 		for (int i = 0; i < indiceCortes.size(); i++) {
@@ -169,6 +184,9 @@ public class CutRmsa {
 				}
 				valoresCortesPorIndice.add(cont);
 			}
+		}
+		if(valoresCortesPorIndice.size() == 0){
+			throw new ValidationException("No se el valor del corte");
 		}
 		return valoresCortesPorIndice;
 	}

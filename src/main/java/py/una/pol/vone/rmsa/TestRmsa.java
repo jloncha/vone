@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import javax.xml.bind.ValidationException;
+
 import py.una.pol.vone.kshortestpath.Edge;
 import py.una.pol.vone.kshortestpath.Graph;
 import py.una.pol.vone.kshortestpath.Path;
@@ -19,7 +21,7 @@ import py.una.pol.vone.simulator.util.NetworkGenerator;
 public class TestRmsa {
 
 	  @SuppressWarnings("rawtypes")
-	public static void main(String args[]) {
+	public static void main(String args[]) throws ValidationException {
 		  Integer cantidadFS = 12;
 		  Integer identificador = 0;
 		  Random randomno = new Random();
