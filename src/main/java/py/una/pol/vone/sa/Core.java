@@ -10,6 +10,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
+import py.una.pol.vone.rmsa.Rmsa;
+import py.una.pol.vone.simulator.model.SustrateEdge;
 import py.una.pol.vone.simulator.model.SustrateNetwork;
 import py.una.pol.vone.simulator.model.SustrateNode;
 import py.una.pol.vone.simulator.model.VirtualEdge;
@@ -26,6 +28,7 @@ public class Core {
 	private VirtualNode actualVN;
 	private SustrateNode actualSN;
 	private List<SustrateNode> sustratePath;
+	private List<VirtualNode> virtualPath;
 	
 	public Core(){
 		
@@ -40,6 +43,9 @@ public class Core {
 		this.nodesToMap = this.virtualRequest.getNodosVirtuales();
 		this.phisicalNodes = this.sustrateNetwork.getNodosFisicos();
 		this.bestSolution = new Solution();
+		this.bestSolution.setSustrateNetwork(sustrateNetwork);
+		this.sustratePath = new ArrayList<SustrateNode>();
+		this.virtualPath = new ArrayList<VirtualNode>();
 		
 	}
 
@@ -87,23 +93,39 @@ public class Core {
 	 */
 	public void recursivePopulate(VirtualNode node, List<VirtualEdge> adjacent, Boolean itsHead) {
 		VirtualNode nodoAux = new VirtualNode();
+		System.out.println("Nodo " + node.getNombre());
 		// Controlamos que hayan hojas que se puedan agregar o que sea la raiz del arbol
-		if ((VNTree.itContains(VNTree.getHead(), node) == false) || (itsHead == true)) {
+		//if ((VNTree.itContains(VNTree.getHead(), node) == false) || (itsHead == true)) {
 			if (!adjacent.isEmpty()) {
 				VirtualNode maximun = new VirtualNode();
 				maximun = adjacent.get(0).getNodoUno().equals(node) ? adjacent.get(0).getNodoDos()
 						: adjacent.get(0).getNodoUno();
 				// Llamamos a nuestro ordenador de Listas
 				// orderAdjacents();
-				for (VirtualEdge edge : adjacent) {
+				for (VirtualEdge edge : adjacent) {					
 					// Obtenemos el nodo con mayor capacidad de CPU, el
 					// mismo pasa a ser nuestro nueva hoja a agregar
 					nodoAux = node.equals(edge.getNodoUno()) ? edge.getNodoDos() : edge.getNodoUno();
-					VNTree.addLeaf(node, nodoAux);
-					recursivePopulate(nodoAux, nodoAux.getAdyacentes(), false);
+					System.out.println("Adjacente " + nodoAux.getNombre());
+					if (VNTree.itContains(VNTree.getHead(), nodoAux) == false){
+						VNTree.addLeaf(node, nodoAux);
+						//recursivePopulate(nodoAux, nodoAux.getAdyacentes(), false);
+					}
+					
+				}
+				
+				for (VirtualEdge edge : adjacent) {					
+					// Obtenemos el nodo con mayor capacidad de CPU, el
+					// mismo pasa a ser nuestro nueva hoja a agregar
+					nodoAux = node.equals(edge.getNodoUno()) ? edge.getNodoDos() : edge.getNodoUno();
+					System.out.println("Llamada Recursiva " + nodoAux.getNombre());
+					if (VNTree.itContains(VNTree.getHead(), nodoAux) == false){
+						//VNTree.addLeaf(node, nodoAux);
+						recursivePopulate(nodoAux, nodoAux.getAdyacentes(), false);
+					}
+					
 				}
 
-			}
 		}
 	}
 	/**
@@ -121,6 +143,7 @@ public class Core {
 		actualVN = VNTree.getHead();
 		//Una vez obtenida la raiz, recorremos los nodos virtuales
 		recursiveGenerateSolution(actualVN);
+		System.out.println("FIN");
 	}
 	/**
 	 * Metodo recursivo de generacion de solucion
@@ -131,11 +154,12 @@ public class Core {
 		Random randonGenerator = new Random(); 
 		try{
 			//Comprobamos si es un nodo raiz, si es asi seleccionamos un nodo fisico al azar
-			if(nodoVirtual.equals(VNTree.getHead())){
+
+				if(nodoVirtual.equals(VNTree.getHead())){
 				//Significa que es la raiz, entonces obtenemos todos los nodos
 				//Fisicos que tienen lo minimo de CPU requerido
 				for(SustrateNode auxNode : phisicalNodes){
-					if(nodoVirtual.getCapacidadCPU()>= auxNode.getCapacidadCPU()){
+					if(nodoVirtual.getCapacidadCPU()<= auxNode.getCapacidadCPU()){
 						//Significa que es un precandidato
 						//entonces agregamos a la lista de precandidatos
 						preCandidates.add(auxNode);
@@ -149,13 +173,61 @@ public class Core {
 			}else{
 			//Si no corresponde a la Raiz se procede a selecionar vecinos
 				SustrateNode beforeNode = new SustrateNode();
+				//Obtenemos el ultimo nodo mapeado
 				beforeNode = sustratePath.get(sustratePath.size()-1);
-				
+				//Obtenemos los vecinos precandidatos
+				preCandidates = getPrecandidatesNotRoot(beforeNode, nodoVirtual.getCapacidadCPU());
+				//seleccionamos un nodo al azar que va a ser nuestro destino de mapeo
+				actualSN = preCandidates.get(randonGenerator.nextInt(preCandidates.size()));
+				Mapping mappingAfterRoot = new Mapping(nodoVirtual, actualSN);
+				bestSolution.getMap().add(mappingAfterRoot);
+				//Agregamos en el path, en donde se muestra los que fueron mapeados
+				//Pasamos a mapear su enlace
+				Rmsa calculateEdge= new Rmsa();
+				//Necesitamos saber cuanto requiere de Frecuency Slots se requieren
+				Integer qantSolts = 0;
+				//primero recuperamos el nodo anterior
+				VirtualNode beforeVN = new VirtualNode();
+				beforeVN = virtualPath.get(virtualPath.size()-1);
+				for(VirtualEdge auxEdge : beforeVN.getAdyacentes()){
+					if((auxEdge.getNodoUno().equals(beforeVN)&& auxEdge.getNodoDos().equals(nodoVirtual))||
+					    auxEdge.getNodoDos().equals(beforeVN)&& auxEdge.getNodoUno().equals(nodoVirtual)){
+						qantSolts = auxEdge.getCantidadFS();
+					}
+				}
+				bestSolution.setSustrateNetwork(calculateEdge.realizarRmsa(bestSolution.getSustrateNetwork(), String.valueOf(beforeNode.getIdentificador()), String.valueOf(actualSN.getIdentificador()), 5, qantSolts));
+			}
+			virtualPath.add(nodoVirtual);
+			sustratePath.add(actualSN);
+			//Ahora debemos mapear todos los demas nodos del arbol
+			for (VirtualNode obj : VNTree.getSuccessors(nodoVirtual)){
+				recursiveGenerateSolution(obj);
 			}
 		}catch (Exception ex){
 			ex.printStackTrace();
 		}
 		
+	}
+	
+	/**
+	 * Metodo que devuelve los precandidatos del nodo
+	 * @param center
+	 * @return
+	 */
+	public List<SustrateNode> getPrecandidatesNotRoot(SustrateNode center, Integer requiremnt) {
+		List<SustrateNode> resp = new ArrayList<SustrateNode>();
+		SustrateNode auxNode = new SustrateNode();
+		try {
+			for (SustrateEdge node : center.getAdyacentes()) {
+				auxNode = center.equals(node.getNodoUno()) ? node.getNodoDos() : node.getNodoUno();
+				if (auxNode.getCapacidadCPU() >= requiremnt) {
+					resp.add(auxNode);
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return resp;
 	}
 	
 }
