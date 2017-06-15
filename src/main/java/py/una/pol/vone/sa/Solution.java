@@ -1,6 +1,9 @@
 package py.una.pol.vone.sa;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import py.una.pol.vone.simulator.model.SustrateNetwork;
 /**
  * Clase que representa las soluciones del problema
  * @author Jean
@@ -11,9 +14,11 @@ public class Solution {
 	private List<Mapping> map;
 	private Integer frecuencyUsed;
 	private Integer cpuUsed;
+	private SustrateNetwork sustrateNetwork;
 	
 	public Solution() {
 		super();
+		this.map = new ArrayList<Mapping>();
 	}
 	public List<Mapping> getMap() {
 		return map;
@@ -33,6 +38,11 @@ public class Solution {
 	public void setCpuUsed(Integer cpuUsed) {
 		this.cpuUsed = cpuUsed;
 	}
-	
+	public SustrateNetwork getSustrateNetwork() {
+		return sustrateNetwork;
+	}
+	public void setSustrateNetwork(SustrateNetwork sustrateNetwork) {
+		this.sustrateNetwork = sustrateNetwork;
+	}
 	
 }
