@@ -116,6 +116,9 @@ public class Tree<T> {
 		}
 		for (T obj : this.getSuccessors(root)){
 			resp = itContains(obj, searchOb);
+			if(resp){
+				break;
+			}
 		}
 		return resp;
 	}

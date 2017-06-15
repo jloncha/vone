@@ -108,20 +108,24 @@ public class Core {
 					nodoAux = node.equals(edge.getNodoUno()) ? edge.getNodoDos() : edge.getNodoUno();
 					System.out.println("Adjacente " + nodoAux.getNombre());
 					if (VNTree.itContains(VNTree.getHead(), nodoAux) == false){
+						System.out.println("Se inserta " + nodoAux.getNombre());
 						VNTree.addLeaf(node, nodoAux);
 						//recursivePopulate(nodoAux, nodoAux.getAdyacentes(), false);
 					}
 					
 				}
-				
+				VirtualNode nodoAux2 = new VirtualNode();
 				for (VirtualEdge edge : adjacent) {					
 					// Obtenemos el nodo con mayor capacidad de CPU, el
 					// mismo pasa a ser nuestro nueva hoja a agregar
 					nodoAux = node.equals(edge.getNodoUno()) ? edge.getNodoDos() : edge.getNodoUno();
 					System.out.println("Llamada Recursiva " + nodoAux.getNombre());
-					if (VNTree.itContains(VNTree.getHead(), nodoAux) == false){
-						//VNTree.addLeaf(node, nodoAux);
-						recursivePopulate(nodoAux, nodoAux.getAdyacentes(), false);
+					for (VirtualEdge edge2 : nodoAux.getAdyacentes()){
+						nodoAux2 = nodoAux.equals(edge2.getNodoUno()) ? edge2.getNodoDos() : edge2.getNodoUno();
+						System.out.println("Adj de Adj " + nodoAux2.getNombre());
+						if (VNTree.itContains(VNTree.getHead(), nodoAux2) == false){
+							recursivePopulate(nodoAux, nodoAux.getAdyacentes(), false);
+						}
 					}
 					
 				}
