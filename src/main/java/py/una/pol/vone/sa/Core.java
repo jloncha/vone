@@ -1,6 +1,7 @@
 package py.una.pol.vone.sa;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -138,7 +139,7 @@ public class Core {
 	 * @return
 	 */
 	/*public List<VirtualNode> orderAdjacents(List<VirtualNode> originalList){
-		
+		List<VirtualNode> listOrdenada =Collections.sort(originalList, ());
 	}*/
 	
 	public void processTree(){
