@@ -51,7 +51,7 @@ public class App
 		//display the results
 		System.out.format("Objective1  Objective2%n");
 		
-		 new Plot().add("NSGAII", result).show(); 
+		 //new Plot().add("NSGAII", result).show(); 
 		 
 		for (Solution solution : result) {
 			

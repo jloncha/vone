@@ -107,7 +107,12 @@ public class BitMatrix implements Variable{
 	public BitMatrix copy() {
     	BitMatrix copy = new BitMatrix(this.rows, this.cols);
     	for (int i = 0; i < this.rows; i++) {
-			copy.or(i, i);
+    		if(this.bitArr[i].cardinality() != 0){
+    			copy.or(i, i);
+    		}else{
+    			this.bitArr[i].set(0,true);
+    			copy.or(i, i);
+    		}
 		}
 		return copy;
 	}
