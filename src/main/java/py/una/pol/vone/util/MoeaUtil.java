@@ -1,6 +1,7 @@
 package py.una.pol.vone.util;
 
 import py.una.pol.vone.nsga.Objetivo2;
+import py.una.pol.vone.nsga.Objetivo3;
 import py.una.pol.vone.simulator.model.SustrateNetwork;
 
 public class MoeaUtil {
@@ -31,14 +32,19 @@ public class MoeaUtil {
 		 * El segundo objetivo consiste en la reduccion de fragmentacion
 		 * La misma se controla el minimizar el indice de FS utilizado/cantEnlaces
 		 */
+		double[] resp = new double[3];
 		Objetivo2 obj2 = new Objetivo2();
+		Objetivo3 obj3 = new Objetivo3();
 		try {
 			obj2.getEvaluacion(redSustrato);
+			obj3.getEvaluacion(redSustrato);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return new double[2];
+		resp[1] = obj2.getFitness();
+		resp[2] = obj3.getFitness();
+		return resp;
 	}
 	
 	public double[] getContrains(){
