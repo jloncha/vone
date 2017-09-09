@@ -42,7 +42,7 @@ public class Objetivo3 {
 			}
 			// Restamos los valores max y minimo de CPU, si esta balanceado esto
 			// tenderá a cero
-			fitness = maxCPU - minCPU;
+			fitness = new Double (maxCPU - minCPU);
 		} catch (Exception ex) {
 			throw new Exception("Error en evaluacion de objetivo balancear nodos");
 		}
