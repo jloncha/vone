@@ -154,7 +154,7 @@ public class VoneBinRun2 {
 		NondominatedPopulation result = new Executor()
 				.withProblemClass(VoneProblem.class)
 				.withAlgorithm("NSGAII")
-				.withProperty("populationSize", 10)
+				.withProperty("populationSize", 15)
 				.withProperty("withReplacement", true)
 				.withProperty("operator", "hux+bf")
 				.withProperty("hux.rate", 0.9)
@@ -175,7 +175,7 @@ public class VoneBinRun2 {
 			System.out.format("Objective %s%n", i);
 			Solution solution = result.get(i);
 			
-			//if(!solution.violatesConstraints()){
+			if(!solution.violatesConstraints()){
 				double[] objectives = solution.getObjectives();
 				// negate objectives to return them to their maximized form
 				//objectives = Vector.negate(objectives);
@@ -199,7 +199,7 @@ public class VoneBinRun2 {
 				System.out.println("]");
 				//System.out.println(solution.getVariable(i));
 				
-			//}
+			}
 			
 		}
 		new Plot().add("NSGAII", result).show(); 

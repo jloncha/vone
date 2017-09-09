@@ -12,6 +12,9 @@ public class VoneBinRun {
 
 		public static int m = 3;  //cant de nodos virtuales (filas)
 		
+		//formula 1 min sumatoria  slots utilizados x enlaces
+		//formula 2 min (sumatoria frec slot index max utilizado) / cant. enlaces
+		//formula 3 min balance carga nodos = cpumax - cpumin
 		public static int n = 10;  //cant de nodos fisicos (columnas)
 		
 		public static int p = 3;  //cant de enlaces virtuales (filas)
