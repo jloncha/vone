@@ -4,7 +4,7 @@ package py.una.pol.vone;
 import org.moeaframework.mymodel.SustrateNetwork;
 import org.moeaframework.mymodel.VirtualNetwork;
 
-import py.una.pol.vone.nsga.MOEAParameters;
+import py.una.pol.vone.nsga.VoneNsgaII;
 import py.una.pol.vone.util.CargarRed;
 
 public class MainVone {
@@ -14,13 +14,9 @@ public class MainVone {
 		SustrateNetwork network = cargarRed.redFisica;
 		VirtualNetwork virtualNetwork = cargarRed.redVirtual;
 		
-		org.moeaframework.mymodel.SustrateNetwork framework = new org.moeaframework.mymodel.SustrateNetwork();
-		framework = network;
+		VoneNsgaII nsga = new VoneNsgaII(1, 3, 3);
+		nsga.cargarParametros(3, 3, 1, network.getNroNodos(), virtualNetwork.getNroNodos(), network, virtualNetwork);
 		
-		MOEAParameters parameters = new MOEAParameters();
-		parameters.setNroObjetivos(3);
-		parameters.setNroRestricciones(3);
-		parameters.setNroVariableDecision(1);
-		parameters.setRedSustrato(network);
+		
 	}
 }
