@@ -1,5 +1,7 @@
 package py.una.pol.vone.nsga;
 
+import py.una.pol.vone.simulator.model.SustrateNetwork;
+
 public class MOEAParameters {
 
 	private Integer nroObjetivos;
@@ -7,6 +9,7 @@ public class MOEAParameters {
 	private Integer nroVariableDecision;
 	private Integer nodosFisicos;
 	private Integer nodosVirtuales;
+	private SustrateNetwork redSustrato;
 	
 	public MOEAParameters() {
 		super();
@@ -62,4 +65,13 @@ public class MOEAParameters {
 	public void setNodosVirtuales(Integer nodosVirtuales) {
 		this.nodosVirtuales = nodosVirtuales;
 	}
+
+	public SustrateNetwork getRedSustrato() {
+		return redSustrato;
+	}
+
+	public void setRedSustrato(SustrateNetwork redSustrato) {
+		this.redSustrato = redSustrato;
+	}
+	
 }

@@ -32,7 +32,7 @@ public class VoneNsgaII extends AbstractProblem{
 		boolean[] d = EncodingUtils.getBinary(solution.getVariable(0));
 		boolean[][] mat = util.generateMat(d, parameters.getNodosFisicos(), parameters.getNodosVirtuales());
 		//obtener las funciones
-		funciones = util.getFuncions();
+		funciones = util.getFuncions(parameters.getRedSustrato());
 		solution.setObjectives(funciones);
 		//obtener las restricciones
 		restricciones = util.getContrains();

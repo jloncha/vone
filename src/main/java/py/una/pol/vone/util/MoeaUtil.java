@@ -1,5 +1,8 @@
 package py.una.pol.vone.util;
 
+import py.una.pol.vone.nsga.Objetivo2;
+import py.una.pol.vone.simulator.model.SustrateNetwork;
+
 public class MoeaUtil {
 
 	public boolean[][] generateMat(boolean[] d, Integer m, Integer n){
@@ -14,7 +17,7 @@ public class MoeaUtil {
 		return mat;
 	}
 	
-	public double[] getFuncions(){
+	public double[] getFuncions(SustrateNetwork redSustrato){
 		/* para la funcion objetivo 1: desde la fila 1 de la matriz, buscar todos los enlaces de la red virtual que 
 		 * parten de ese punto, evitar ciclos(esto es por ejemplo si ya se obtuvo enlace de 1 a 2, no obtener enlace de 2 a 1)
 		 * una vez que se obtiene un enlace invocar al algoritmo del rsa, con este valor del path calcular la funcion
@@ -22,6 +25,11 @@ public class MoeaUtil {
 		 *
 		 * para la funcion objetivo 2: trabajar sobre red fisica y con la formula de balance de carga, calcular el balanceo
 		 * de la red luego de asignar todos los enlaces que ocuparan los vnr
+		 */
+		
+		/***
+		 * El segundo objetivo consiste en la reduccion de fragmentacion
+		 * La misma se controla el minimizar el indice de FS utilizado/cantEnlaces
 		 */
 		return new double[2];
 	}
