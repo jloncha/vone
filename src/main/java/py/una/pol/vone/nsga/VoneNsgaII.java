@@ -2,6 +2,8 @@ package py.una.pol.vone.nsga;
 
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.mymodel.SustrateNetwork;
+import org.moeaframework.mymodel.VirtualNetwork;
 import org.moeaframework.problem.AbstractProblem;
 
 import py.una.pol.vone.util.MoeaUtil;
@@ -15,13 +17,15 @@ public class VoneNsgaII extends AbstractProblem{
 	}
 
 	public void cargarParametros(Integer nroObjetivos, Integer nroRestricciones, Integer nroVariable,
-			Integer nodosFisicos, Integer nodosVirtuales){
+			Integer nodosFisicos, Integer nodosVirtuales, SustrateNetwork network, VirtualNetwork virtualNetwork){
 		parameters = new MOEAParameters();
 		parameters.setNodosFisicos(nodosFisicos);
 		parameters.setNodosVirtuales(nodosVirtuales);
 		parameters.setNroObjetivos(nroObjetivos);
 		parameters.setNroRestricciones(nroRestricciones);
 		parameters.setNroVariableDecision(nroVariable);
+		parameters.setRedSustrato(network);
+		parameters.setRedVirtual(virtualNetwork);
 	}
 	
 	@Override

@@ -2,8 +2,8 @@ package py.una.pol.vone.sa;
 
 import java.util.List;
 
-import py.una.pol.vone.simulator.model.SustrateNetwork;
-import py.una.pol.vone.simulator.model.VirtualNetwork;
+import org.moeaframework.mymodel.SustrateNetwork;
+import org.moeaframework.mymodel.VirtualNetwork;
 
 public class SimulatedAnnealing {
 

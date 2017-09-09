@@ -3,7 +3,7 @@ package py.una.pol.vone.sa;
 import java.util.ArrayList;
 import java.util.List;
 
-import py.una.pol.vone.simulator.model.SustrateNetwork;
+import org.moeaframework.mymodel.SustrateNetwork;
 /**
  * Clase que representa las soluciones del problema
  * @author Jean

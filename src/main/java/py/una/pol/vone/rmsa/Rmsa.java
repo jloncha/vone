@@ -7,13 +7,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.moeaframework.mymodel.SustrateEdge;
+import org.moeaframework.mymodel.SustrateNetwork;
+
 import py.una.pol.vone.excepcions.ValidationsExceptions;
 import py.una.pol.vone.kshortestpath.Edge;
 import py.una.pol.vone.kshortestpath.Graph;
 import py.una.pol.vone.kshortestpath.Path;
 import py.una.pol.vone.kshortestpath.Yen;
-import py.una.pol.vone.simulator.model.SustrateEdge;
-import py.una.pol.vone.simulator.model.SustrateNetwork;
 
 public class Rmsa {
 

@@ -23,11 +23,11 @@
 			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>vone</groupId>
 			<artifactId>vone</artifactId>
 			<version>1.0</version>
-		</dependency>
+		</dependency>  -->
 		<dependency>
 			<groupId>moea</groupId>
 			<artifactId>moea</artifactId>
