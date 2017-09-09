@@ -31,6 +31,13 @@ public class MoeaUtil {
 		 * El segundo objetivo consiste en la reduccion de fragmentacion
 		 * La misma se controla el minimizar el indice de FS utilizado/cantEnlaces
 		 */
+		Objetivo2 obj2 = new Objetivo2();
+		try {
+			obj2.getEvaluacion(redSustrato);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return new double[2];
 	}
 	
