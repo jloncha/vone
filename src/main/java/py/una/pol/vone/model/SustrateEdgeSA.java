@@ -1,6 +1,6 @@
 package py.una.pol.vone.model;
 
-import py.una.pol.vone.simulator.model.SustrateEdge;
+import org.moeaframework.mymodel.SustrateEdge;
 
 public class SustrateEdgeSA extends SustrateEdge {
 

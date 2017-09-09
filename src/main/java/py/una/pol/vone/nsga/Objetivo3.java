@@ -1,7 +1,7 @@
 package py.una.pol.vone.nsga;
 
-import py.una.pol.vone.simulator.model.SustrateNetwork;
-import py.una.pol.vone.simulator.model.SustrateNode;
+import org.moeaframework.mymodel.SustrateNetwork;
+import org.moeaframework.mymodel.SustrateNode;
 
 /***
  * Clase que se usa para representar el Objetivo enfocado en

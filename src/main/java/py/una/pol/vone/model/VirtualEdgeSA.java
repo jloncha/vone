@@ -1,6 +1,6 @@
 package py.una.pol.vone.model;
 
-import py.una.pol.vone.simulator.model.VirtualEdge;
+import org.moeaframework.mymodel.VirtualEdge;
 
 public class VirtualEdgeSA extends VirtualEdge{
 

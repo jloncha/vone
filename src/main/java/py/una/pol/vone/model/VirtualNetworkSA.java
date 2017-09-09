@@ -2,7 +2,7 @@ package py.una.pol.vone.model;
 
 import java.util.ArrayList;
 
-import py.una.pol.vone.simulator.model.VirtualNetwork;
+import org.moeaframework.mymodel.VirtualNetwork;
 
 public class VirtualNetworkSA extends VirtualNetwork{
 

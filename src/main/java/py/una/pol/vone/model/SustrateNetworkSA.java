@@ -2,7 +2,7 @@ package py.una.pol.vone.model;
 
 import java.util.ArrayList;
 
-import py.una.pol.vone.simulator.model.SustrateNetwork;
+import org.moeaframework.mymodel.SustrateNetwork;
 
 public class SustrateNetworkSA extends SustrateNetwork {
 

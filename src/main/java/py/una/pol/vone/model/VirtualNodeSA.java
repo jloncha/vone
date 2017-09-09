@@ -2,7 +2,7 @@ package py.una.pol.vone.model;
 
 import java.util.ArrayList;
 
-import py.una.pol.vone.simulator.model.VirtualNode;
+import org.moeaframework.mymodel.VirtualNode;
 
 public class VirtualNodeSA extends VirtualNode{
 	

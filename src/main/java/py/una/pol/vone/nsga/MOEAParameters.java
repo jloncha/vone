@@ -1,6 +1,6 @@
 package py.una.pol.vone.nsga;
 
-import py.una.pol.vone.simulator.model.SustrateNetwork;
+import org.moeaframework.mymodel.SustrateNetwork;
 
 public class MOEAParameters {
 

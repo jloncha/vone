@@ -1,8 +1,9 @@
 package py.una.pol.vone.util;
 
+import org.moeaframework.mymodel.SustrateNetwork;
+
 import py.una.pol.vone.nsga.Objetivo2;
 import py.una.pol.vone.nsga.Objetivo3;
-import py.una.pol.vone.simulator.model.SustrateNetwork;
 
 public class MoeaUtil {
 
