@@ -18,6 +18,8 @@ import py.una.pol.vone.kshortestpath.Yen;
 
 public class Rmsa {
 
+	private Double evaluatefuntion1 = 0.0;
+	
 	@SuppressWarnings("rawtypes")
 	public SustrateNetwork realizarRmsa(SustrateNetwork sustrateNetwork, String sourceNode, 
 			String targetNode, Integer k, Integer slotRequerido) throws ValidationsExceptions {
@@ -130,6 +132,7 @@ public class Rmsa {
 	        	}
 			}
 	        
+	        this.evaluatefuntion1 = evaluatefuntion1 + (double) (ksp.get(listaSeleccionados.get(5)).size() * slotRequerido);
 		} catch (ValidationsExceptions valExp) {
 			valExp.printStackTrace();
 			throw valExp;
@@ -162,4 +165,13 @@ public class Rmsa {
 		  //System.out.println("Identificador sustrateEdge: " + sustrateEdge.getNombre() + " y su peso: " + peso);
 		  return peso;
 	  }
+
+	public Double getEvaluatefuntion1() {
+		return evaluatefuntion1;
+	}
+
+	public void setEvaluatefuntion1(Double evaluatefuntion1) {
+		this.evaluatefuntion1 = evaluatefuntion1;
+	}
+	
 }

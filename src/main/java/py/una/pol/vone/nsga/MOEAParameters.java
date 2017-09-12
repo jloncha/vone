@@ -10,6 +10,7 @@ public class MOEAParameters {
 	private Integer nroVariableDecision;
 	private Integer nodosFisicos;
 	private Integer nodosVirtuales;
+	private Integer kshort;
 	private SustrateNetwork redSustrato;
 	private VirtualNetwork redVirtual;
 	
@@ -19,13 +20,14 @@ public class MOEAParameters {
 	}
 
 	public MOEAParameters(Integer nroObjetivos, Integer nroRestricciones, Integer nroVariableDecision,
-			Integer nodosFisicos, Integer nodosVirtuales) {
+			Integer nodosFisicos, Integer nodosVirtuales, Integer kshort) {
 		super();
 		this.nroObjetivos = nroObjetivos;
 		this.nroRestricciones = nroRestricciones;
 		this.nroVariableDecision = nroVariableDecision;
 		this.nodosFisicos = nodosFisicos;
 		this.nodosVirtuales = nodosVirtuales;
+		this.kshort = kshort;
 	}
 
 	public Integer getNroObjetivos() {
@@ -82,6 +84,14 @@ public class MOEAParameters {
 
 	public void setRedVirtual(VirtualNetwork redVirtual) {
 		this.redVirtual = redVirtual;
+	}
+
+	public Integer getKshort() {
+		return kshort;
+	}
+
+	public void setKshort(Integer kshort) {
+		this.kshort = kshort;
 	}
 	
 }
