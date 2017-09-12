@@ -17,7 +17,8 @@ public class VoneNsgaII extends AbstractProblem{
 	}
 
 	public void cargarParametros(Integer nroObjetivos, Integer nroRestricciones, Integer nroVariable,
-			Integer nodosFisicos, Integer nodosVirtuales, SustrateNetwork network, VirtualNetwork virtualNetwork){
+			Integer nodosFisicos, Integer nodosVirtuales, SustrateNetwork network, VirtualNetwork virtualNetwork, 
+			Integer kshort){
 		parameters = new MOEAParameters();
 		parameters.setNodosFisicos(nodosFisicos);
 		parameters.setNodosVirtuales(nodosVirtuales);
@@ -26,6 +27,7 @@ public class VoneNsgaII extends AbstractProblem{
 		parameters.setNroVariableDecision(nroVariable);
 		parameters.setRedSustrato(network);
 		parameters.setRedVirtual(virtualNetwork);
+		parameters.setKshort(kshort);
 	}
 	
 	@Override
@@ -36,7 +38,7 @@ public class VoneNsgaII extends AbstractProblem{
 		boolean[] d = EncodingUtils.getBinary(solution.getVariable(0));
 		boolean[][] mat = util.generateMat(d, parameters.getNodosFisicos(), parameters.getNodosVirtuales());
 		//obtener las funciones
-		funciones = util.getFuncions(parameters.getRedSustrato());
+		funciones = util.getFuncions(mat, parameters);
 		solution.setObjectives(funciones);
 		//obtener las restricciones
 		restricciones = util.getContrains();
