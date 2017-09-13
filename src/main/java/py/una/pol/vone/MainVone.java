@@ -16,7 +16,7 @@ public class MainVone {
 		
 		VoneNsgaII nsga = new VoneNsgaII(1, 3, 3);
 		nsga.cargarParametros(3, 3, 1, network.getNroNodos(), virtualNetwork.getNroNodos(), network, virtualNetwork,
-				2, 5);
+				2);
 		
 		
 	}
