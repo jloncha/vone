@@ -47,7 +47,8 @@ public class VoneNsgaII extends AbstractProblem{
 		//obtener las restricciones
 		restricciones = util.getContrains();
 		solution.setConstraints(restricciones);
-		
+		restricciones = evaluarRestricciones(solution);
+		solution.setConstraints(restricciones);
 	}
 	
 	@Override
