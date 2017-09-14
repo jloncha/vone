@@ -1,6 +1,10 @@
 package py.una.pol.vone.nsga;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.Variable;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.mymodel.SustrateNetwork;
 import org.moeaframework.mymodel.VirtualNetwork;
@@ -60,4 +64,92 @@ public class VoneNsgaII extends AbstractProblem{
 		
 		return solution;
 	}
+	
+	public double[] evaluarRestricciones(Solution solucion) {
+		double[] resp = null;
+		Integer cpuV = 0;
+		Integer cpuF = 0;
+		try {
+			resp = new double[this.parameters.getNroRestricciones()];
+			Integer m = this.parameters.getNodosVirtuales();
+			Integer n = this.parameters.getNodosFisicos();
+			// Casteamos la variable a una matriz de boolean para trabajar mejor
+			boolean[] d = EncodingUtils.getBinary(solucion.getVariable(0));
+			boolean[][] individuo = new boolean[m][n];
+			individuo = convertArray2Mat(m, n, d);
+			// Inicializamos todas las restricciones a valor <>0
+			for (Integer k = 0; k < this.parameters.getNroRestricciones(); k++) {
+				resp[k] = 1;
+			}
+			// Primera restriccion, que implica que existe solo un uno en una
+			// fila
+			for (Integer i = 0; i < m; i++) {
+				Integer sum = 0;
+				for (Integer j = 0; j < n; j++) {
+					sum = sum + (individuo[i][j] ? 1 : 0);
+				}
+				// Significa que hay mas de un 1, se debe cortar el ciclo
+				if (sum != 1) {
+					return resp;
+				}
+			}
+			// Si paso todo el ciclo significa que cumplio la primera
+			// restriccion
+			resp[0] = 0;
+			// pasamos a la segunda restriccion
+			for (Integer i = 0; i < m; i++) {
+				Integer sum = 0;
+				for (Integer j = 0; j < n; j++) {
+					sum = sum + (individuo[i][j] ? 1 : 0);
+				}
+				// Significa que hay mas de un 1, se debe cortar el ciclo
+				if (sum > 1) {
+					return resp;
+				}
+			}
+			// Si paso, significa que tambien se cumplio la segunda restriccion
+			resp[1] = 0;
+			// pasamos a la tercera restriccion, evaluar si los nodos fisicos
+			// tienen suficiente CPU
+			for (Integer i = 0; i < n; i++) {
+				for (Integer j = 0; j < m; j++) {
+					// significa que es un mapeado
+					if (individuo[j][i]) {
+						cpuV = this.parameters.getRedVirtual().getNodosVirtuales().get(i).getCapacidadCPU();
+						cpuF = this.parameters.getRedSustrato().getNodosFisicos().get(j).getCapacidadCPU();
+						if (cpuV > cpuF) {
+							return resp;
+						}
+					}
+				}
+			}
+			// Si paso, significa que cumple la tercera validacion tambien
+			resp[2] = 0;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return resp;
+	}
+
+	/***
+	 * Funcion que convierte un array de boolean en matriz
+	 * @throws Exception 
+	 */
+	public boolean[][]convertArray2Mat(Integer fil, Integer col, boolean[] vector) 
+			throws Exception{
+		boolean[][] resp = new boolean[fil][col];
+		Integer cont = 0;
+		try{
+			for(Integer i=0;i<fil;i++){
+				for(Integer j=0;j<col; j++){
+					resp[i][j] = vector[cont];
+					cont++;
+				}
+			}
+		}catch(Exception ex){
+			throw new Exception(ex.getMessage());
+		}
+		return resp;
+	}
+		
 }
