@@ -98,10 +98,10 @@ public class VoneNsgaII extends AbstractProblem{
 			// restriccion
 			resp[0] = 0;
 			// pasamos a la segunda restriccion
-			for (Integer i = 0; i < m; i++) {
+			for (Integer i = 0; i < n; i++) {
 				Integer sum = 0;
-				for (Integer j = 0; j < n; j++) {
-					sum = sum + (individuo[i][j] ? 1 : 0);
+				for (Integer j = 0; j < m; j++) {
+					sum = sum + (individuo[j][i] ? 1 : 0);
 				}
 				// Significa que hay mas de un 1, se debe cortar el ciclo
 				if (sum > 1) {
@@ -112,10 +112,10 @@ public class VoneNsgaII extends AbstractProblem{
 			resp[1] = 0;
 			// pasamos a la tercera restriccion, evaluar si los nodos fisicos
 			// tienen suficiente CPU
-			for (Integer i = 0; i < n; i++) {
-				for (Integer j = 0; j < m; j++) {
+			for (Integer i = 0; i < m; i++) {
+				for (Integer j = 0; j < n; j++) {
 					// significa que es un mapeado
-					if (individuo[j][i]) {
+					if (individuo[i][j]) {
 						cpuV = this.parameters.getRedVirtual().getNodosVirtuales().get(i).getCapacidadCPU();
 						cpuF = this.parameters.getRedSustrato().getNodosFisicos().get(j).getCapacidadCPU();
 						if (cpuV > cpuF) {
