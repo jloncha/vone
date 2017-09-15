@@ -10,10 +10,14 @@ import py.una.pol.vone.util.MoeaUtil;
 
 public class VoneNsgaII extends AbstractProblem{
 
-	MOEAParameters parameters;
+	static MOEAParameters parameters;
 
-	public VoneNsgaII(int numberOfVariables, int numberOfObjectives, int numberOfConstraints) {
+	/*public VoneNsgaII(int numberOfVariables, int numberOfObjectives, int numberOfConstraints) {
 		super(numberOfVariables, numberOfObjectives, numberOfConstraints);
+	}*/
+	
+	public VoneNsgaII() {
+		super(1, 3, 4);
 	}
 
 	public void cargarParametros(Integer nroObjetivos, Integer nroRestricciones, Integer nroVariable,
@@ -61,11 +65,11 @@ public class VoneNsgaII extends AbstractProblem{
 	@Override
 	public Solution newSolution(){
 
-		Integer nroObjetivos = this.parameters.getNroObjetivos();
-		Integer nroRestricciones = this.parameters.getNroRestricciones();
-		Integer nroVariableDecision = this.parameters.getNroVariableDecision();
-		Integer nodosFisicos = this.parameters.getNodosFisicos();
-		Integer nodosVirtuales = this.parameters.getNodosVirtuales();
+		Integer nroObjetivos = parameters.getNroObjetivos();
+		Integer nroRestricciones = parameters.getNroRestricciones();
+		Integer nroVariableDecision = parameters.getNroVariableDecision();
+		Integer nodosFisicos = parameters.getNodosFisicos();
+		Integer nodosVirtuales = parameters.getNodosVirtuales();
 		
 		Solution solution = new Solution(nroVariableDecision, nroObjetivos, nroRestricciones);
 		solution.setVariable(0, EncodingUtils.newBinary(nodosFisicos * nodosVirtuales));

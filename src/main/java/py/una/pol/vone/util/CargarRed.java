@@ -23,7 +23,7 @@ public class CargarRed {
 		
 		SustrateNetwork sustrateNetwork = new SustrateNetwork();
 		NetworkGenerator.generarRedFisica(sustrateNetwork, "src/main/resources/grafos/tiny_graph_01.txt", 6);
-		
+		sustrateNetwork.setCantidadFS(15);
 		for(SustrateNode nodo : sustrateNetwork.getNodosFisicos()){
 			nodo.setCapacidadCPU(15);
 		}
