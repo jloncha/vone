@@ -35,7 +35,6 @@ public class MoeaUtil {
 		 * La misma se controla el minimizar el indice de FS utilizado/cantEnlaces
 		 */
 		int identificador1, identificador2, nodoFisicoId1 = 0, nodoFisicoId2 = 0;
-		
 		Rmsa rmsa = new Rmsa();
 		for (VirtualEdge virtualEdge : parameters.getRedVirtual().getEnlacesVirtuales()) {
 			identificador1 = virtualEdge.getNodoUno().getIdentificador();
@@ -54,8 +53,12 @@ public class MoeaUtil {
 				//si no existe path o no se pudo realizar el rmsa devolver con constrains
 				SustrateNetwork network = rmsa.realizarRmsa(parameters.getRedSustrato(), String.valueOf(nodoFisicoId1), 
 						String.valueOf(nodoFisicoId2), parameters.getKshort(), virtualEdge.getCantidadFS());
+				if(network == null){
+					return null;
+				} else {
+					parameters.setRedSustrato(network);
+				}
 				
-				parameters.setRedSustrato(network);
 			} catch(Exception e){
 				e.printStackTrace();
 			}
@@ -79,7 +82,65 @@ public class MoeaUtil {
 		return resp;
 	}
 	
-	public double[] getContrains(){
-		return new double[2];
+	public double[] getContrains(boolean[][] mat, MOEAParameters parameters){
+		double[] resp = null;
+		Integer cpuV = 0;
+		Integer cpuF = 0;
+		try {
+			resp = new double[parameters.getNroRestricciones()];
+			Integer m = parameters.getNodosVirtuales();
+			Integer n = parameters.getNodosFisicos();
+			// Inicializamos todas las restricciones a valor <>0
+			for (Integer k = 0; k < parameters.getNroRestricciones(); k++) {
+				resp[k] = 1;
+			}
+			// Primera restriccion, que implica que existe solo un uno en una
+			// fila
+			for (Integer i = 0; i < m; i++) {
+				Integer sum = 0;
+				for (Integer j = 0; j < n; j++) {
+					sum = sum + (mat[i][j] ? 1 : 0);
+				}
+				// Significa que hay mas de un 1, se debe cortar el ciclo
+				if (sum != 1) {
+					return resp;
+				}
+			}
+			// Si paso todo el ciclo significa que cumplio la primera
+			// restriccion
+			resp[0] = 0;
+			// pasamos a la segunda restriccion
+			for (Integer i = 0; i < n; i++) {
+				Integer sum = 0;
+				for (Integer j = 0; j < m; j++) {
+					sum = sum + (mat[j][i] ? 1 : 0);
+				}
+				// Significa que hay mas de un 1, se debe cortar el ciclo
+				if (sum > 1) {
+					return resp;
+				}
+			}
+			// Si paso, significa que tambien se cumplio la segunda restriccion
+			resp[1] = 0;
+			// pasamos a la tercera restriccion, evaluar si los nodos fisicos
+			// tienen suficiente CPU
+			for (Integer i = 0; i < m; i++) {
+				for (Integer j = 0; j < n; j++) {
+					// significa que es un mapeado
+					if (mat[i][j]) {
+						cpuV = parameters.getRedVirtual().getNodosVirtuales().get(i).getCapacidadCPU();
+						cpuF = parameters.getRedSustrato().getNodosFisicos().get(j).getCapacidadCPU();
+						if (cpuV > cpuF) {
+							return resp;
+						}
+					}
+				}
+			}
+			// Si paso, significa que cumple la tercera validacion tambien
+			resp[2] = 0;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return resp;
 	}
 }

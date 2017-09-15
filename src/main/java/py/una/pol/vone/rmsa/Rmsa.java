@@ -56,7 +56,8 @@ public class Rmsa {
 	        //matriz filas y columnas 
 	        Map<String, List<Integer>> map = new HashMap<String, List<Integer>>();
 	        if(ksp == null || ksp.size() == 0){
-	        	throw new ValidationsExceptions("No se encontro camino");
+	        	return null;
+	        	//throw new ValidationsExceptions("No se encontro camino");
 	        }
 	        for (Path p : ksp) {
 	            System.out.println(++n + ") " + p.getNodes());
@@ -117,22 +118,27 @@ public class Rmsa {
 	           }
 	        }
 	        Integer identificadorEnlace;
-	        List<Integer> listaSeleccionados = map.get(seleccionado);
-	        for (int i = 0; i < ksp.get(listaSeleccionados.get(5)).getEdges().size(); i++) {
-	        	identificadorEnlace = obtenerEnlaceFisico(sustrateNetwork,ksp.get(listaSeleccionados.get(5)).getEdges().get(i));
-	        	if(!identificadorEnlace.equals(-1)){
-	        		for (SustrateEdge sustrateEdge : sustrateNetwork.getEnlacesFisicos()) {
-						if(identificadorEnlace.equals(sustrateEdge.getIdentificador())){
-							for (int j = 0; j < slotRequerido; j++) {
-								sustrateEdge.getFrequencySlot()[Integer.valueOf(listaSeleccionados.get(0)) + j] = true;
+	        if(("".equals(seleccionado))){
+	        	return null;
+	        } else{
+	        	List<Integer> listaSeleccionados = map.get(seleccionado);
+		        for (int i = 0; i < ksp.get(listaSeleccionados.get(5)).getEdges().size(); i++) {
+		        	identificadorEnlace = obtenerEnlaceFisico(sustrateNetwork,ksp.get(listaSeleccionados.get(5)).getEdges().get(i));
+		        	if(!identificadorEnlace.equals(-1)){
+		        		for (SustrateEdge sustrateEdge : sustrateNetwork.getEnlacesFisicos()) {
+							if(identificadorEnlace.equals(sustrateEdge.getIdentificador())){
+								for (int j = 0; j < slotRequerido; j++) {
+									sustrateEdge.getFrequencySlot()[Integer.valueOf(listaSeleccionados.get(0)) + j] = true;
+								}
+								
 							}
-							
 						}
-					}
-	        	}
-			}
+		        	}
+				}
+		        
+		        this.evaluatefuntion1 = evaluatefuntion1 + (double) (ksp.get(listaSeleccionados.get(5)).size() * slotRequerido);
+	        }
 	        
-	        this.evaluatefuntion1 = evaluatefuntion1 + (double) (ksp.get(listaSeleccionados.get(5)).size() * slotRequerido);
 		} catch (ValidationsExceptions valExp) {
 			valExp.printStackTrace();
 			throw valExp;

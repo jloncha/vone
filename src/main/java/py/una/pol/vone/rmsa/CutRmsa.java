@@ -100,7 +100,8 @@ public class CutRmsa {
 			boolean band = false;
 			int recorrible = matrizPath.length - slotRequerido;
 			if(matrizPath.length < slotRequerido){
-				throw new ValidationException("La cantidad de Slot requerido es mayor al disponible");
+				return indices;
+				//throw new ValidationException("La cantidad de Slot requerido es mayor al disponible");
 			}
 			for (int i = 0; i <= recorrible; i++) {
 				band = false;
@@ -122,7 +123,8 @@ public class CutRmsa {
 				}
 			}
 			if(indices.size() == 0){
-				throw new ValidationException("Sin indices disponibles para el corte");
+				return indices;
+				//throw new ValidationException("Sin indices disponibles para el corte");
 			}
 		
 		return indices;
@@ -141,7 +143,8 @@ public class CutRmsa {
 	public static List<Integer> eliminarContiguos(List<Integer> lista, int slotRequerido) 
 			throws ValidationException{
 		if(lista.size() == 0){
-			throw new ValidationException("No se encontraron elementos para el corte");
+			return lista;
+			//throw new ValidationException("No se encontraron elementos para el corte");
 		}
 		List<Integer> aEliminar = new ArrayList<>();
 		for (int i = 0; i < lista.size() - 1; i++) {
@@ -187,7 +190,8 @@ public class CutRmsa {
 			}
 		}
 		if(valoresCortesPorIndice.size() == 0){
-			throw new ValidationException("No se el valor del corte");
+			return valoresCortesPorIndice;
+			//throw new ValidationException("No se el valor del corte");
 		}
 		return valoresCortesPorIndice;
 	}

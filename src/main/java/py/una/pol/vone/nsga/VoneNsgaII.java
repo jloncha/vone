@@ -1,10 +1,6 @@
 package py.una.pol.vone.nsga;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.mymodel.SustrateNetwork;
 import org.moeaframework.mymodel.VirtualNetwork;
@@ -43,12 +39,23 @@ public class VoneNsgaII extends AbstractProblem{
 		boolean[][] mat = util.generateMat(d, parameters.getNodosFisicos(), parameters.getNodosVirtuales());
 		//obtener las funciones
 		funciones = util.getFuncions(mat, parameters);
+		if(funciones == null){
+			double[] notValue = new double[parameters.getNroObjetivos()];
+			for (int i = 0; i < parameters.getNroObjetivos(); i++) {
+				notValue[i] = Double.MAX_VALUE;
+			}
+		}
 		solution.setObjectives(funciones);
 		//obtener las restricciones
-		restricciones = util.getContrains();
+		restricciones = util.getContrains(mat, parameters);
+		if(funciones == null){
+			restricciones[parameters.getNroRestricciones() - 1] = 1;
+		} else {
+			restricciones[parameters.getNroRestricciones() - 1] = 0;
+		}
 		solution.setConstraints(restricciones);
-		restricciones = evaluarRestricciones(solution);
-		solution.setConstraints(restricciones);
+		//restricciones = evaluarRestricciones(solution);
+		//solution.setConstraints(restricciones);
 	}
 	
 	@Override
@@ -66,7 +73,7 @@ public class VoneNsgaII extends AbstractProblem{
 		return solution;
 	}
 	
-	public double[] evaluarRestricciones(Solution solucion) {
+	/*public double[] evaluarRestricciones(Solution solucion) {
 		double[] resp = null;
 		Integer cpuV = 0;
 		Integer cpuF = 0;
@@ -130,27 +137,6 @@ public class VoneNsgaII extends AbstractProblem{
 			ex.printStackTrace();
 		}
 		return resp;
-	}
-
-	/***
-	 * Funcion que convierte un array de boolean en matriz
-	 * @throws Exception 
-	 */
-	public boolean[][]convertArray2Mat(Integer fil, Integer col, boolean[] vector) 
-			throws Exception{
-		boolean[][] resp = new boolean[fil][col];
-		Integer cont = 0;
-		try{
-			for(Integer i=0;i<fil;i++){
-				for(Integer j=0;j<col; j++){
-					resp[i][j] = vector[cont];
-					cont++;
-				}
-			}
-		}catch(Exception ex){
-			throw new Exception(ex.getMessage());
-		}
-		return resp;
-	}
+	}*/
 		
 }
