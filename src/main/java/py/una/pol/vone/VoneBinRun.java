@@ -10,12 +10,12 @@ import org.moeaframework.problem.AbstractProblem;
 public class VoneBinRun {
 	public static class VoneProblem extends AbstractProblem {
 
-		public static int m = 3;  //cant de nodos virtuales (filas)
+		public static int m = 4;  //cant de nodos virtuales (filas)
 		
 		//formula 1 min sumatoria  slots utilizados x enlaces
 		//formula 2 min (sumatoria frec slot index max utilizado) / cant. enlaces
 		//formula 3 min balance carga nodos = cpumax - cpumin
-		public static int n = 10;  //cant de nodos fisicos (columnas)
+		public static int n = 6;  //cant de nodos fisicos (columnas)
 		
 		public static int p = 3;  //cant de enlaces virtuales (filas)
 		
@@ -25,11 +25,11 @@ public class VoneBinRun {
 												{true, false, true, false, true, true, false}, 
 												{false, false, true, false, false, false, true}};
 		
-		public static Double[] requerimientoCPU = {9.0, 10.0, 7.0};
+		public static Double[] requerimientoCPU = {9.0, 10.0, 7.0, 8.0};
 		
-		public static Integer[] capacidadCPU = {20, 18, 25, 23, 19, 21, 17, 16, 24, 15};
+		public static Integer[] capacidadCPU = {20, 18, 25, 23, 19, 21};
 		
-		public static Integer[] requerimientoEnlace = {3, 5, 1};
+		public static Integer[] requerimientoEnlace = {3, 5, 1, 4};
 		
 		public static Integer[] capacidadEnlace = {10, 15, 18, 17, 12, 13, 9};
 	 
@@ -41,8 +41,8 @@ public class VoneBinRun {
 		public void evaluate(Solution solution) {
 			
 			double[] f = new double[2];
-			double[] g = {2.0, 2.0, 2.0};
-			double[] h = {2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0};
+			double[] g = {2.0, 2.0, 2.0, 2.0};
+			double[] h = {2.0, 2.0, 2.0, 2.0, 2.0, 2.0};
 			//funcion objetivo 1
 			double sum = 0;
 			//funcion objetivo 2
@@ -165,7 +165,7 @@ public class VoneBinRun {
 				/*.withProperty("sbx.distributionIndex", 25.0)
 				.withProperty("pm.rate", 0.6)
 				.withProperty("pm.distributionIndex", 15.0) */
-				.withMaxEvaluations(10000)
+				.withMaxEvaluations(1000000)
 				.distributeOnAllCores()
 				.run();
 				
@@ -192,8 +192,8 @@ public class VoneBinRun {
 				//imprimir valores
 				int k = 0;
 				System.out.println("[");
-				for (int h = 0; h < 3; h++) {
-					for (int j = 0; j < 10; j++) {
+				for (int h = 0; h < 4; h++) {
+					for (int j = 0; j < 6; j++) {
 						System.out.print(solucionVariable.charAt(k) + " ");
 						k++;
 					}

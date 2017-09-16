@@ -1,5 +1,8 @@
 package py.una.pol.vone.nsga;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.mymodel.SustrateNetwork;
@@ -40,26 +43,57 @@ public class VoneNsgaII extends AbstractProblem{
 		double[] restricciones = new double[parameters.getNroRestricciones()];
 		MoeaUtil util = new MoeaUtil();
 		boolean[] d = EncodingUtils.getBinary(solution.getVariable(0));
-		boolean[][] mat = util.generateMat(d, parameters.getNodosFisicos(), parameters.getNodosVirtuales());
+		//boolean[] d =  {false,true,false,false,false,false,true,false,false,false,false,false,false,false,false,false,true,false,false,false,false,true,false,false};
+		//System.out.println("red al inicio: " + parameters.getRedSustrato());
+		
+		
+		boolean[][] mat = util.generateMat(d, parameters.getNodosVirtuales(), parameters.getNodosFisicos());
+		/*for (int i = 0; i < parameters.getNodosVirtuales(); i++) {
+			for (int j = 0; j < parameters.getNodosFisicos(); j++) {
+				System.out.print(mat[i][j] + " ");
+			}
+			System.out.println();
+		}*/
 		//obtener las funciones
-		funciones = util.getFuncions(mat, parameters);
+		boolean band = false;
+		restricciones = util.getContrains(mat, parameters);
+		for (int i = 0; i < restricciones.length - 1; i++) {
+			if(restricciones[i] != 0 ){
+				band = true;
+			}
+		}
+		
+		if(!band){
+			System.out.println();
+			System.out.println("d: " + solution.getVariable(0));
+			for (int i = 0; i < restricciones.length; i++) {
+				System.out.print(restricciones[i] + " ");
+			}
+			System.out.println("*****************************");
+			System.out.println(parameters.getRedSustrato());
+			funciones = util.getFuncions(mat, parameters);
+			System.out.println("***************************** funtions " + funciones);
+		} else {
+			funciones = null;
+		}
 		if(funciones == null){
 			double[] notValue = new double[parameters.getNroObjetivos()];
 			for (int i = 0; i < parameters.getNroObjetivos(); i++) {
 				notValue[i] = Double.MAX_VALUE;
 			}
+			solution.setObjectives(notValue);
+		}else{
+			solution.setObjectives(funciones);
+			System.out.println("****************************************************** " + solution.getVariable(0));
 		}
-		solution.setObjectives(funciones);
+		
 		//obtener las restricciones
-		restricciones = util.getContrains(mat, parameters);
-		if(funciones == null){
-			restricciones[parameters.getNroRestricciones() - 1] = 1;
-		} else {
+		//restricciones = util.getContrains(mat, parameters, true);
+		if(funciones != null){
 			restricciones[parameters.getNroRestricciones() - 1] = 0;
 		}
 		solution.setConstraints(restricciones);
-		//restricciones = evaluarRestricciones(solution);
-		//solution.setConstraints(restricciones);
+		solution.setAttribute("jean", util);
 	}
 	
 	@Override
@@ -71,76 +105,11 @@ public class VoneNsgaII extends AbstractProblem{
 		Integer nodosFisicos = parameters.getNodosFisicos();
 		Integer nodosVirtuales = parameters.getNodosVirtuales();
 		
+		Map<String, Object> nombreMap = new HashMap<String, Object>();
+		nombreMap.put("redSustrato", "est es una prueba");
 		Solution solution = new Solution(nroVariableDecision, nroObjetivos, nroRestricciones);
 		solution.setVariable(0, EncodingUtils.newBinary(nodosFisicos * nodosVirtuales));
 		
 		return solution;
-	}
-	
-	/*public double[] evaluarRestricciones(Solution solucion) {
-		double[] resp = null;
-		Integer cpuV = 0;
-		Integer cpuF = 0;
-		try {
-			resp = new double[this.parameters.getNroRestricciones()];
-			Integer m = this.parameters.getNodosVirtuales();
-			Integer n = this.parameters.getNodosFisicos();
-			// Casteamos la variable a una matriz de boolean para trabajar mejor
-			boolean[] d = EncodingUtils.getBinary(solucion.getVariable(0));
-			boolean[][] individuo = new boolean[m][n];
-			individuo = convertArray2Mat(m, n, d);
-			// Inicializamos todas las restricciones a valor <>0
-			for (Integer k = 0; k < this.parameters.getNroRestricciones(); k++) {
-				resp[k] = 1;
-			}
-			// Primera restriccion, que implica que existe solo un uno en una
-			// fila
-			for (Integer i = 0; i < m; i++) {
-				Integer sum = 0;
-				for (Integer j = 0; j < n; j++) {
-					sum = sum + (individuo[i][j] ? 1 : 0);
-				}
-				// Significa que hay mas de un 1, se debe cortar el ciclo
-				if (sum != 1) {
-					return resp;
-				}
-			}
-			// Si paso todo el ciclo significa que cumplio la primera
-			// restriccion
-			resp[0] = 0;
-			// pasamos a la segunda restriccion
-			for (Integer i = 0; i < n; i++) {
-				Integer sum = 0;
-				for (Integer j = 0; j < m; j++) {
-					sum = sum + (individuo[j][i] ? 1 : 0);
-				}
-				// Significa que hay mas de un 1, se debe cortar el ciclo
-				if (sum > 1) {
-					return resp;
-				}
-			}
-			// Si paso, significa que tambien se cumplio la segunda restriccion
-			resp[1] = 0;
-			// pasamos a la tercera restriccion, evaluar si los nodos fisicos
-			// tienen suficiente CPU
-			for (Integer i = 0; i < m; i++) {
-				for (Integer j = 0; j < n; j++) {
-					// significa que es un mapeado
-					if (individuo[i][j]) {
-						cpuV = this.parameters.getRedVirtual().getNodosVirtuales().get(i).getCapacidadCPU();
-						cpuF = this.parameters.getRedSustrato().getNodosFisicos().get(j).getCapacidadCPU();
-						if (cpuV > cpuF) {
-							return resp;
-						}
-					}
-				}
-			}
-			// Si paso, significa que cumple la tercera validacion tambien
-			resp[2] = 0;
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		return resp;
-	}*/
-		
+	}	
 }

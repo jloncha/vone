@@ -19,7 +19,7 @@ public class MainVone {
 		VirtualNetwork virtualNetwork = cargarRed.redVirtual;
 		
 		VoneNsgaII nsga = new VoneNsgaII();
-		nsga.cargarParametros(3, 4, 1, network.getNroNodos(), virtualNetwork.getNroNodos(), network, virtualNetwork,
+		nsga.cargarParametros(3, 3, 1, network.getNroNodos(), virtualNetwork.getNroNodos(), network, virtualNetwork,
 				2);
 		
 		NondominatedPopulation result = new Executor()
@@ -28,12 +28,15 @@ public class MainVone {
 				.withProperty("populationSize", 50)
 				.withProperty("withReplacement", true)
 				.withProperty("operator", "hux+bf")
+				.withProperty("atributoNuevo", "jean")
+				//valor por defecto hux.rate 1
 				.withProperty("hux.rate", 0.9)
+				//valor por defecto 0.01
 				.withProperty("bf.rate", 0.02)
 				/*.withProperty("sbx.distributionIndex", 25.0)
 				.withProperty("pm.rate", 0.6)
 				.withProperty("pm.distributionIndex", 15.0) */
-				.withMaxEvaluations(10000)
+				.withMaxEvaluations(1000)
 				.distributeOnAllCores()
 				.run();
 				
@@ -46,7 +49,7 @@ public class MainVone {
 			System.out.format("Objective %s%n", i);
 			Solution solution = result.get(i);
 			
-			//if(!solution.violatesConstraints()){
+			if(!solution.violatesConstraints()){
 				double[] objectives = solution.getObjectives();
 				// negate objectives to return them to their maximized form
 				//objectives = Vector.negate(objectives);
@@ -54,6 +57,8 @@ public class MainVone {
 				System.out.println(objectives[0]);
 				System.out.println("Valor Funcion Obj 2:");
 				System.out.println(objectives[1]);
+				System.out.println("Valor Funcion Obj 3:");
+				System.out.println(objectives[2]);
 				System.out.println("Matriz solucion");
 				solucionVariable = solution.getVariable(0).toString();
 				System.out.println(solucionVariable);
@@ -70,7 +75,7 @@ public class MainVone {
 				System.out.println("]");*/
 				//System.out.println(solution.getVariable(i));
 				
-			//}
+			}
 			
 		}
 		new Plot().add("NSGAII", result).show();

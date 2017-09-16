@@ -1,10 +1,17 @@
 package py.una.pol.vone.nsga;
 
+import java.io.Serializable;
+
 import org.moeaframework.mymodel.SustrateNetwork;
 import org.moeaframework.mymodel.VirtualNetwork;
 
-public class MOEAParameters {
+public class MOEAParameters implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private Integer nroObjetivos;
 	private Integer nroRestricciones;
 	private Integer nroVariableDecision;

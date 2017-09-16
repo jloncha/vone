@@ -1,5 +1,7 @@
 package py.una.pol.vone.util;
 
+import java.io.Serializable;
+
 import org.moeaframework.mymodel.SustrateNetwork;
 import org.moeaframework.mymodel.VirtualEdge;
 
@@ -8,7 +10,12 @@ import py.una.pol.vone.nsga.Objetivo2;
 import py.una.pol.vone.nsga.Objetivo3;
 import py.una.pol.vone.rmsa.Rmsa;
 
-public class MoeaUtil {
+public class MoeaUtil implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public boolean[][] generateMat(boolean[] d, Integer m, Integer n){
 		boolean mat[][] = new boolean[m][n]; 
@@ -34,6 +41,7 @@ public class MoeaUtil {
 		 * El segundo objetivo consiste en la reduccion de fragmentacion
 		 * La misma se controla el minimizar el indice de FS utilizado/cantEnlaces
 		 */
+		
 		int identificador1, identificador2, nodoFisicoId1 = 0, nodoFisicoId2 = 0;
 		Rmsa rmsa = new Rmsa();
 		for (VirtualEdge virtualEdge : parameters.getRedVirtual().getEnlacesVirtuales()) {
@@ -54,6 +62,7 @@ public class MoeaUtil {
 				SustrateNetwork network = rmsa.realizarRmsa(parameters.getRedSustrato(), String.valueOf(nodoFisicoId1), 
 						String.valueOf(nodoFisicoId2), parameters.getKshort(), virtualEdge.getCantidadFS());
 				if(network == null){
+					System.out.println("red de sustrato null despues de invocar al rsa");
 					return null;
 				} else {
 					parameters.setRedSustrato(network);
@@ -70,7 +79,12 @@ public class MoeaUtil {
 		Objetivo3 obj3 = new Objetivo3();
 		try {
 			obj2.getEvaluacion(parameters.getRedSustrato());
+			if(mapearNodos(mat, parameters)!=1){
+				System.out.println("retorne null en mapearNodos objetivo3");
+				return null;
+			}
 			obj3.getEvaluacion(parameters.getRedSustrato());
+			//System.out.println("red al mapear todos los enlaces: " + parameters.getRedSustrato());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -84,8 +98,6 @@ public class MoeaUtil {
 	
 	public double[] getContrains(boolean[][] mat, MOEAParameters parameters){
 		double[] resp = null;
-		Integer cpuV = 0;
-		Integer cpuF = 0;
 		try {
 			resp = new double[parameters.getNroRestricciones()];
 			Integer m = parameters.getNodosVirtuales();
@@ -122,25 +134,55 @@ public class MoeaUtil {
 			}
 			// Si paso, significa que tambien se cumplio la segunda restriccion
 			resp[1] = 0;
-			// pasamos a la tercera restriccion, evaluar si los nodos fisicos
-			// tienen suficiente CPU
-			for (Integer i = 0; i < m; i++) {
-				for (Integer j = 0; j < n; j++) {
-					// significa que es un mapeado
-					if (mat[i][j]) {
-						cpuV = parameters.getRedVirtual().getNodosVirtuales().get(i).getCapacidadCPU();
-						cpuF = parameters.getRedSustrato().getNodosFisicos().get(j).getCapacidadCPU();
-						if (cpuV > cpuF) {
-							return resp;
+			/*if(validar){
+				// pasamos a la tercera restriccion, evaluar si los nodos fisicos
+				// tienen suficiente CPU
+				for (Integer i = 0; i < m; i++) {
+					for (Integer j = 0; j < n; j++) {
+						// significa que es un mapeado
+						if (mat[i][j]) {
+							cpuV = parameters.getRedVirtual().getNodosVirtuales().get(i).getCapacidadCPU();
+							cpuF = parameters.getRedSustrato().getNodosFisicos().get(j).capacidadActual();
+							if (cpuV > cpuF) {
+								return resp;
+							}
 						}
 					}
 				}
-			}
-			// Si paso, significa que cumple la tercera validacion tambien
-			resp[2] = 0;
+				// Si paso, significa que cumple la tercera validacion tambien
+				resp[2] = 0;
+			}*/
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		return resp;
+	}
+	
+	public Integer mapearNodos(boolean[][] mat, MOEAParameters parameters){
+		Integer cpuV = 0;
+		Integer cpuF = 0;
+		try{
+			for (int i = 0; i < parameters.getNodosVirtuales(); i++) {
+				for (int j = 0; j < parameters.getNodosFisicos(); j++) {
+					//Significa que exta mapeado
+					if(mat[i][j]){
+						cpuV = parameters.getRedVirtual().getNodosVirtuales().get(i).getCapacidadCPU();
+						cpuF = parameters.getRedSustrato().getNodosFisicos().get(j).capacidadActual();
+						if (cpuV <=cpuF) {
+							parameters.getRedSustrato().getNodosFisicos().get(j).asignarRecursoCPU(cpuV);;
+							
+						}
+						else{
+							return -1;
+						}
+					}
+				}
+			}
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		
+		return 1;
 	}
 }

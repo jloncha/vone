@@ -23,20 +23,20 @@ public class CargarRed {
 		
 		SustrateNetwork sustrateNetwork = new SustrateNetwork();
 		NetworkGenerator.generarRedFisica(sustrateNetwork, "src/main/resources/grafos/tiny_graph_01.txt", 6);
-		sustrateNetwork.setCantidadFS(15);
+		sustrateNetwork.setCantidadFS(12);
 		for(SustrateNode nodo : sustrateNetwork.getNodosFisicos()){
 			nodo.setCapacidadCPU(15);
 		}
 		
-		VirtualNode nodo1 = new VirtualNode("A",0, 12);
-		VirtualNode nodo2 = new VirtualNode("B",1, 7);
-		VirtualNode nodo3 = new VirtualNode("C",2, 10);
-		VirtualNode nodo4 = new VirtualNode("D",3, 4);
+		VirtualNode nodo1 = new VirtualNode("A",0, 3);
+		VirtualNode nodo2 = new VirtualNode("B",1, 2);
+		VirtualNode nodo3 = new VirtualNode("C",2, 3);
+		VirtualNode nodo4 = new VirtualNode("D",3, 2);
 		
-		VirtualEdge enlace1 = new VirtualEdge(4, "A-B", 4);
+		VirtualEdge enlace1 = new VirtualEdge(4, "A-B", 2);
 		VirtualEdge enlace2 = new VirtualEdge(5, "B-C", 2);
-		VirtualEdge enlace3 = new VirtualEdge(6, "C-A", 6);
-		VirtualEdge enlace4 = new VirtualEdge(7, "D-C", 5);
+		VirtualEdge enlace3 = new VirtualEdge(6, "C-A", 2);
+		VirtualEdge enlace4 = new VirtualEdge(7, "D-C", 2);
 		/*SustrateNode nodof1 = new SustrateNode(0, "1", 50);
 		SustrateNode nodof2 = new SustrateNode(1, "2", 50);
 		SustrateNode nodof3 = new SustrateNode(2, "3", 50);

@@ -28,16 +28,16 @@ public class Objetivo3 {
 		 * Red
 		 */
 		Integer maxCPU = 0;
-		Integer minCPU = 0;
+		Integer minCPU = Integer.MAX_VALUE;
 		try {
 			// Recorremos todos los nodos de la red para ver cuales son los
 			// maximos y minimos de utilizacion
 			for (SustrateNode nodo : redSustrato.getNodosFisicos()) {
-				if (nodo.getCapacidadCPU() > maxCPU) {
-					maxCPU = nodo.getCapacidadCPU();
+				if (nodo.capacidadActual() > maxCPU) {
+					maxCPU = nodo.capacidadActual();
 				}
-				if (minCPU < nodo.getCapacidadCPU()) {
-					minCPU = nodo.getCapacidadCPU();
+				if (minCPU > nodo.capacidadActual()) {
+					minCPU = nodo.capacidadActual();
 				}
 			}
 			// Restamos los valores max y minimo de CPU, si esta balanceado esto

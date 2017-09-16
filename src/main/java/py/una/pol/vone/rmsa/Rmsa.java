@@ -35,7 +35,7 @@ public class Rmsa {
 				throw new ValidationsExceptions("Elementos de sustrateNetwork son nulos");
 			}
 			
-			
+			//System.out.println(sustrateNetwork);
 			Graph graph = new Graph();
 			for (SustrateEdge sustrateEdge : sustrateNetwork.getEnlacesFisicos()) {
 				if(sustrateEdge.getNodoUno() == null || sustrateEdge.getNodoDos() == null){
@@ -51,16 +51,18 @@ public class Rmsa {
 			List<Path> ksp;
 			Yen yenAlgorithm = new Yen();
 	        ksp = yenAlgorithm.ksp(graph, sourceNode, targetNode, k);
-	        
+	        //System.out.println("Este es mi path list: " + ksp);
 	        int n = 0;
 	        //matriz filas y columnas 
 	        Map<String, List<Integer>> map = new HashMap<String, List<Integer>>();
 	        if(ksp == null || ksp.size() == 0){
+	        	System.out.println("retorne null en ksp null o vacio");
 	        	return null;
 	        	//throw new ValidationsExceptions("No se encontro camino");
 	        }
 	        for (Path p : ksp) {
-	            System.out.println(++n + ") " + p.getNodes());
+	            //System.out.println(++n + ") " + p.getNodes());
+	        	++n;
 	            boolean[][] matriz = new boolean[sustrateNetwork.getCantidadFS()][p.getEdges().size()];
 	            Iterator<Edge> iter = p.getEdges().iterator();
 	            int columna = 0;
@@ -107,11 +109,11 @@ public class Rmsa {
 	        String seleccionado = "";
 	        while(iterator.hasNext()) {
 	           Map.Entry mentry = (Map.Entry)iterator.next();
-	           System.out.print("key is: "+ mentry.getKey() + " & Value is: ");
-	           System.out.println(mentry.getValue());
+	           //System.out.print("key is: "+ mentry.getKey() + " & Value is: ");
+	           //System.out.println(mentry.getValue());
 	           valorActual = (double) ((( map.get(mentry.getKey()).get(4) * slotRequerido) + map.get(mentry.getKey()).get(1) 
 	        		   +  map.get(mentry.getKey()).get(2))/(double) map.get(mentry.getKey()).get(3));
-	           System.out.println(valorActual);
+	           //System.out.println(valorActual);
 	           if(minValue > valorActual){
 	        	   seleccionado = (String) mentry.getKey();
 	        	   minValue = valorActual;
@@ -119,9 +121,11 @@ public class Rmsa {
 	        }
 	        Integer identificadorEnlace;
 	        if(("".equals(seleccionado))){
+	        	System.out.println("retorne null en que no encuentra valor en el map");
 	        	return null;
 	        } else{
 	        	List<Integer> listaSeleccionados = map.get(seleccionado);
+	        	//System.out.println(ksp.get(listaSeleccionados.get(5)));
 		        for (int i = 0; i < ksp.get(listaSeleccionados.get(5)).getEdges().size(); i++) {
 		        	identificadorEnlace = obtenerEnlaceFisico(sustrateNetwork,ksp.get(listaSeleccionados.get(5)).getEdges().get(i));
 		        	if(!identificadorEnlace.equals(-1)){
