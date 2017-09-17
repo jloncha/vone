@@ -11,6 +11,7 @@ import org.moeaframework.mymodel.VirtualEdge;
 import org.moeaframework.mymodel.VirtualNetwork;
 import org.moeaframework.mymodel.VirtualNode;
 
+import py.una.pol.vone.nsga.SolucionMoea;
 import py.una.pol.vone.rmsa.Rmsa;
 
 public class Core {
@@ -194,7 +195,8 @@ public class Core {
 						qantSolts = auxEdge.getCantidadFS();
 					}
 				}
-				bestSolution.setSustrateNetwork(calculateEdge.realizarRmsa(bestSolution.getSustrateNetwork(), String.valueOf(beforeNode.getIdentificador()), String.valueOf(actualSN.getIdentificador()), 5, qantSolts));
+				bestSolution.setSustrateNetwork(calculateEdge.realizarRmsa(bestSolution.getSustrateNetwork(), String.valueOf(beforeNode.getIdentificador()), String.valueOf(actualSN.getIdentificador()), 5, qantSolts
+						, new SolucionMoea()));
 			}
 			virtualPath.add(nodoVirtual);
 			sustratePath.add(actualSN);

@@ -21,16 +21,16 @@ public class Objetivo2 {
 		 * Lo que evaluamos aqui es la formula de SUM (fsi/n) donde el FSI es el
 		 * indice maximo de slot utilizado, y n es la cantidad de enlaces
 		 */
-		Integer sumFSI = 0;
+		Double sumFSI = 0.0;
 		// Recorremos todos los enlaces
 		try {
 			for (SustrateEdge enlace : redSustrato.getEnlacesFisicos()) {
-				Integer fsi = 0;
+				Double fsi = 0.0;
 				for (Integer i = 0; i < enlace.getCantidadFS(); i++) {
 					// Si es valor del FS es true, significa que esta ocupado
 					// Entonces es un candidato a ser el FSI
 					if (enlace.getFrequencySlot()[i]) {
-						fsi = i;
+						fsi = new Double(i);
 					}
 				}
 				// Una vez recorrido todos los slots, ya tenemos el FSI
@@ -39,7 +39,7 @@ public class Objetivo2 {
 			}
 			// Una vez recorrida toda la red, procedemos a dividir entre la
 			// cantidad de enlaces
-			this.fitness = new Double(sumFSI/redSustrato.getEnlacesFisicos().size());
+			this.fitness = new Double(sumFSI/(redSustrato.getEnlacesFisicos().size()*redSustrato.getCantidadFS()));
 		} catch (Exception ex) {
 			throw new Exception("Error en evaluacion de objetivo de Fragmentacion");
 		}

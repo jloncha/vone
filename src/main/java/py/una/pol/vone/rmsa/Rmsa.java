@@ -15,6 +15,7 @@ import py.una.pol.vone.kshortestpath.Edge;
 import py.una.pol.vone.kshortestpath.Graph;
 import py.una.pol.vone.kshortestpath.Path;
 import py.una.pol.vone.kshortestpath.Yen;
+import py.una.pol.vone.nsga.SolucionMoea;
 
 public class Rmsa {
 
@@ -22,7 +23,7 @@ public class Rmsa {
 	
 	@SuppressWarnings("rawtypes")
 	public SustrateNetwork realizarRmsa(SustrateNetwork sustrateNetwork, String sourceNode, 
-			String targetNode, Integer k, Integer slotRequerido) throws ValidationsExceptions {
+			String targetNode, Integer k, Integer slotRequerido, SolucionMoea solucionMoea) throws ValidationsExceptions {
 		
 		try{
 			//validaciones de argumentos
@@ -56,7 +57,7 @@ public class Rmsa {
 	        //matriz filas y columnas 
 	        Map<String, List<Integer>> map = new HashMap<String, List<Integer>>();
 	        if(ksp == null || ksp.size() == 0){
-	        	System.out.println("retorne null en ksp null o vacio");
+	        	//System.out.println("retorne null en ksp null o vacio");
 	        	return null;
 	        	//throw new ValidationsExceptions("No se encontro camino");
 	        }
@@ -121,7 +122,7 @@ public class Rmsa {
 	        }
 	        Integer identificadorEnlace;
 	        if(("".equals(seleccionado))){
-	        	System.out.println("retorne null en que no encuentra valor en el map");
+	        	//System.out.println("retorne null en que no encuentra valor en el map");
 	        	return null;
 	        } else{
 	        	List<Integer> listaSeleccionados = map.get(seleccionado);
@@ -139,7 +140,9 @@ public class Rmsa {
 						}
 		        	}
 				}
-		        
+		        List<Path> listPath = solucionMoea.getList();
+		        listPath.add(ksp.get(listaSeleccionados.get(5)));
+		        solucionMoea.setList(listPath);
 		        this.evaluatefuntion1 = evaluatefuntion1 + (double) (ksp.get(listaSeleccionados.get(5)).size() * slotRequerido);
 	        }
 	        

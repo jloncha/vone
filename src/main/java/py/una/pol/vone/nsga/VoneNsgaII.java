@@ -1,5 +1,6 @@
 package py.una.pol.vone.nsga;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,21 +40,30 @@ public class VoneNsgaII extends AbstractProblem{
 	
 	@Override
 	public void evaluate(Solution solution) {
-		double[] funciones = new double[parameters.getNroObjetivos()];
+		//double[] funciones = new double[parameters.getNroObjetivos()];
 		double[] restricciones = new double[parameters.getNroRestricciones()];
+		SolucionMoea solucion = null;
+		SustrateNetwork sustrate = null;
 		MoeaUtil util = new MoeaUtil();
 		boolean[] d = EncodingUtils.getBinary(solution.getVariable(0));
-		//boolean[] d =  {false,true,false,false,false,false,true,false,false,false,false,false,false,false,false,false,true,false,false,false,false,true,false,false};
+		//boolean[] d =  {false,false,false,true,false,false,false,false,false,false,true,false,false,false,true,false,false,false,false,true,false,false,false,false};
 		//System.out.println("red al inicio: " + parameters.getRedSustrato());
-		
+		System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " + solution.getVariable(0) );
 		
 		boolean[][] mat = util.generateMat(d, parameters.getNodosVirtuales(), parameters.getNodosFisicos());
+		
 		/*for (int i = 0; i < parameters.getNodosVirtuales(); i++) {
 			for (int j = 0; j < parameters.getNodosFisicos(); j++) {
 				System.out.print(mat[i][j] + " ");
 			}
 			System.out.println();
 		}*/
+		try{
+			sustrate = (SustrateNetwork) parameters.getRedSustrato().clone();
+		} catch(CloneNotSupportedException ex){
+			ex.printStackTrace();
+		}
+		
 		//obtener las funciones
 		boolean band = false;
 		restricciones = util.getContrains(mat, parameters);
@@ -64,36 +74,42 @@ public class VoneNsgaII extends AbstractProblem{
 		}
 		
 		if(!band){
-			System.out.println();
-			System.out.println("d: " + solution.getVariable(0));
-			for (int i = 0; i < restricciones.length; i++) {
-				System.out.print(restricciones[i] + " ");
-			}
-			System.out.println("*****************************");
-			System.out.println(parameters.getRedSustrato());
-			funciones = util.getFuncions(mat, parameters);
-			System.out.println("***************************** funtions " + funciones);
+			
+			solucion = util.getFuncions(mat, parameters, sustrate);
+			//System.out.println(parameters.getRedSustrato());
+			
 		} else {
-			funciones = null;
+			solucion = null;
 		}
-		if(funciones == null){
+		if(solucion == null){
 			double[] notValue = new double[parameters.getNroObjetivos()];
 			for (int i = 0; i < parameters.getNroObjetivos(); i++) {
 				notValue[i] = Double.MAX_VALUE;
 			}
 			solution.setObjectives(notValue);
 		}else{
-			solution.setObjectives(funciones);
-			System.out.println("****************************************************** " + solution.getVariable(0));
+			solution.setObjectives(solucion.getFunctions());
+			restricciones[parameters.getNroRestricciones() - 1] = 0;
+			solution.setAttribute("sustrateOriginal", parameters.getRedSustrato());
+			solution.setAttribute("sustrateMapeada", solucion.getSustrateNetwork());
+			solution.setAttribute("listPath", (Serializable) solucion.getList());
+			/*System.out.println("*****************************");
+			System.out.println("d: " + solution.getVariable(0));
+			for (int i = 0; i < restricciones.length; i++) {
+				System.out.print(restricciones[i] + " ");
+			}
+			System.out.println();
+			for (int i = 0; i < funciones.length; i++) {
+				System.out.print(funciones[i] + " ");
+			}
+			System.out.println();
+			System.out.println("#############################");*/
+			
+			//System.out.println("****************************************************** " + solution.getVariable(0));
 		}
 		
-		//obtener las restricciones
-		//restricciones = util.getContrains(mat, parameters, true);
-		if(funciones != null){
-			restricciones[parameters.getNroRestricciones() - 1] = 0;
-		}
 		solution.setConstraints(restricciones);
-		solution.setAttribute("jean", util);
+		
 	}
 	
 	@Override

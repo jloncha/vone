@@ -1,13 +1,18 @@
 package py.una.pol.vone.util;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.moeaframework.mymodel.SustrateNetwork;
 import org.moeaframework.mymodel.VirtualEdge;
 
+import py.una.pol.vone.kshortestpath.Path;
 import py.una.pol.vone.nsga.MOEAParameters;
 import py.una.pol.vone.nsga.Objetivo2;
 import py.una.pol.vone.nsga.Objetivo3;
+import py.una.pol.vone.nsga.Objetivo4;
+import py.una.pol.vone.nsga.SolucionMoea;
 import py.una.pol.vone.rmsa.Rmsa;
 
 public class MoeaUtil implements Serializable{
@@ -29,7 +34,7 @@ public class MoeaUtil implements Serializable{
 		return mat;
 	}
 	
-	public double[] getFuncions(boolean[][] mat, MOEAParameters parameters) {
+	public SolucionMoea getFuncions(boolean[][] mat, MOEAParameters parameters, SustrateNetwork networkOrigin) {
 		/** para la funcion objetivo 1: desde la fila 1 de la matriz, buscar todos los enlaces de la red virtual que 
 		 * parten de ese punto, evitar ciclos(esto es por ejemplo si ya se obtuvo enlace de 1 a 2, no obtener enlace de 2 a 1)
 		 * una vez que se obtiene un enlace invocar al algoritmo del rsa, con este valor del path calcular la funcion
@@ -42,8 +47,21 @@ public class MoeaUtil implements Serializable{
 		 * La misma se controla el minimizar el indice de FS utilizado/cantEnlaces
 		 */
 		
+		/*double min = 100;
+		double max = 101;
+		double[] obj = new double[parameters.getNroRestricciones()];
+		Random r = new Random();
+		for (int i = 0; i < parameters.getNroRestricciones(); i++) {
+			obj[i] =  min + (max - min) * r.nextDouble();
+		}
+		return obj;*/
+		
 		int identificador1, identificador2, nodoFisicoId1 = 0, nodoFisicoId2 = 0;
+		SolucionMoea solucion = new SolucionMoea();
+		List<Path> listPath = new ArrayList<>();
+		solucion.setList(listPath);
 		Rmsa rmsa = new Rmsa();
+		SustrateNetwork network = null;
 		for (VirtualEdge virtualEdge : parameters.getRedVirtual().getEnlacesVirtuales()) {
 			identificador1 = virtualEdge.getNodoUno().getIdentificador();
 			identificador2 = virtualEdge.getNodoDos().getIdentificador();
@@ -59,13 +77,16 @@ public class MoeaUtil implements Serializable{
 			}
 			try{
 				//si no existe path o no se pudo realizar el rmsa devolver con constrains
-				SustrateNetwork network = rmsa.realizarRmsa(parameters.getRedSustrato(), String.valueOf(nodoFisicoId1), 
-						String.valueOf(nodoFisicoId2), parameters.getKshort(), virtualEdge.getCantidadFS());
+				network = rmsa.realizarRmsa(networkOrigin, String.valueOf(nodoFisicoId1), 
+						String.valueOf(nodoFisicoId2), parameters.getKshort(), virtualEdge.getCantidadFS(),
+						solucion);
 				if(network == null){
-					System.out.println("red de sustrato null despues de invocar al rsa");
+					//System.out.println("red de sustrato null despues de invocar al rsa");
 					return null;
 				} else {
-					parameters.setRedSustrato(network);
+					networkOrigin = network;
+					network = null;
+					//parameters.setRedSustrato(network);
 				}
 				
 			} catch(Exception e){
@@ -77,13 +98,15 @@ public class MoeaUtil implements Serializable{
 		double[] resp = new double[parameters.getNroObjetivos()];
 		Objetivo2 obj2 = new Objetivo2();
 		Objetivo3 obj3 = new Objetivo3();
+		Objetivo4 obj4 = new Objetivo4();
 		try {
-			obj2.getEvaluacion(parameters.getRedSustrato());
-			if(mapearNodos(mat, parameters)!=1){
-				System.out.println("retorne null en mapearNodos objetivo3");
+			obj2.getEvaluacion(networkOrigin);
+			if(mapearNodos(mat, parameters, networkOrigin)!=1){
+				//System.out.println("retorne null en mapearNodos objetivo3");
 				return null;
 			}
-			obj3.getEvaluacion(parameters.getRedSustrato());
+			obj3.getEvaluacion(networkOrigin);
+			obj4.getEvaluacion(networkOrigin);
 			//System.out.println("red al mapear todos los enlaces: " + parameters.getRedSustrato());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -92,8 +115,11 @@ public class MoeaUtil implements Serializable{
 		resp[0] = rmsa.getEvaluatefuntion1();
 		resp[1] = obj2.getFitness();
 		resp[2] = obj3.getFitness();
+		resp[3] = obj4.getFitness();
 		
-		return resp;
+		solucion.setFunctions(resp);
+		solucion.setSustrateNetwork(networkOrigin);
+		return solucion;
 	}
 	
 	public double[] getContrains(boolean[][] mat, MOEAParameters parameters){
@@ -159,7 +185,7 @@ public class MoeaUtil implements Serializable{
 		return resp;
 	}
 	
-	public Integer mapearNodos(boolean[][] mat, MOEAParameters parameters){
+	public Integer mapearNodos(boolean[][] mat, MOEAParameters parameters, SustrateNetwork network){
 		Integer cpuV = 0;
 		Integer cpuF = 0;
 		try{
@@ -168,9 +194,9 @@ public class MoeaUtil implements Serializable{
 					//Significa que exta mapeado
 					if(mat[i][j]){
 						cpuV = parameters.getRedVirtual().getNodosVirtuales().get(i).getCapacidadCPU();
-						cpuF = parameters.getRedSustrato().getNodosFisicos().get(j).capacidadActual();
+						cpuF = network.getNodosFisicos().get(j).capacidadActual();
 						if (cpuV <=cpuF) {
-							parameters.getRedSustrato().getNodosFisicos().get(j).asignarRecursoCPU(cpuV);;
+							network.getNodosFisicos().get(j).asignarRecursoCPU(cpuV);;
 							
 						}
 						else{

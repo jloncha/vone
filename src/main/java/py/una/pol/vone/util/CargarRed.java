@@ -19,13 +19,16 @@ public class CargarRed {
 		
 		Integer cantidadFS = 12;
 		Integer identificador = 0;
-		Random randomno = new Random();
-		
+		//Random r = new Random();
+		Integer valorCpu = 0;
 		SustrateNetwork sustrateNetwork = new SustrateNetwork();
+		sustrateNetwork.setNombre("Paper rsa");
 		NetworkGenerator.generarRedFisica(sustrateNetwork, "src/main/resources/grafos/tiny_graph_01.txt", 6);
 		sustrateNetwork.setCantidadFS(12);
+		
 		for(SustrateNode nodo : sustrateNetwork.getNodosFisicos()){
-			nodo.setCapacidadCPU(15);
+			nodo.setCapacidadCPU(valorCpu + 10);
+			valorCpu++;
 		}
 		
 		VirtualNode nodo1 = new VirtualNode("A",0, 3);
