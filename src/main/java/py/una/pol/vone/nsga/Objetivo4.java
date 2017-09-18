@@ -23,12 +23,12 @@ public class Objetivo4 {
 	
 	public void getEvaluacion(SustrateNetwork redSustrato){
 		Double minSlot = Double.MAX_VALUE, maxSlot = Double.MIN_VALUE;
-		Double sum = 0.0;
+		//Double sum = 0.0;
 		for (SustrateEdge edge : redSustrato.getEnlacesFisicos()) {
-			sum = 0.0;
+			Double sum = 0.0;
 			for (int i = 0; i < edge.getFrequencySlot().length; i++) {
 				if(edge.getFrequencySlot()[i]){
-					sum += i + 1;
+					sum += 1;
 					
 				}
 			}

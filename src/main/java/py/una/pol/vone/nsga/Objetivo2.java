@@ -30,7 +30,7 @@ public class Objetivo2 {
 					// Si es valor del FS es true, significa que esta ocupado
 					// Entonces es un candidato a ser el FSI
 					if (enlace.getFrequencySlot()[i]) {
-						fsi = new Double(i);
+						fsi = new Double(i) + 1;
 					}
 				}
 				// Una vez recorrido todos los slots, ya tenemos el FSI
