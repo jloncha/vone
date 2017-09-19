@@ -39,7 +39,7 @@ public class MainVone {
 				/*.withProperty("sbx.distributionIndex", 25.0)
 				.withProperty("pm.rate", 0.6)
 				.withProperty("pm.distributionIndex", 15.0) */
-				.withMaxEvaluations(30000)
+				.withMaxEvaluations(100000)
 				.distributeOnAllCores()
 				.run();
 				

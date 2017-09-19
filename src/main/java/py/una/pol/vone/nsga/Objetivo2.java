@@ -39,7 +39,7 @@ public class Objetivo2 {
 			}
 			// Una vez recorrida toda la red, procedemos a dividir entre la
 			// cantidad de enlaces
-			this.fitness = new Double(sumFSI/(redSustrato.getEnlacesFisicos().size()*redSustrato.getCantidadFS()));
+			this.fitness = new Double(sumFSI/(redSustrato.getEnlacesFisicos().size()));
 		} catch (Exception ex) {
 			throw new Exception("Error en evaluacion de objetivo de Fragmentacion");
 		}
