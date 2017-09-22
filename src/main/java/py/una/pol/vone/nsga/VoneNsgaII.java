@@ -48,7 +48,7 @@ public class VoneNsgaII extends AbstractProblem{
 		boolean[] d = EncodingUtils.getBinary(solution.getVariable(0));
 		//boolean[] d =  {false,false,false,true,false,false,false,false,false,false,true,false,false,false,true,false,false,false,false,true,false,false,false,false};
 		//System.out.println("red al inicio: " + parameters.getRedSustrato());
-		System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " + solution.getVariable(0) );
+		//System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " + solution.getVariable(0) );
 		
 		boolean[][] mat = util.generateMat(d, parameters.getNodosVirtuales(), parameters.getNodosFisicos());
 		

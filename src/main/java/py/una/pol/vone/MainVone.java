@@ -7,7 +7,10 @@ import org.moeaframework.Executor;
 import org.moeaframework.analysis.plot.Plot;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
+import org.moeaframework.mymodel.SustrateEdge;
 import org.moeaframework.mymodel.SustrateNetwork;
+import org.moeaframework.mymodel.SustrateNode;
+import org.moeaframework.mymodel.VirtualEdge;
 import org.moeaframework.mymodel.VirtualNetwork;
 
 import py.una.pol.vone.kshortestpath.Path;
@@ -17,6 +20,8 @@ import py.una.pol.vone.util.CargarRed;
 public class MainVone {
 
 	public static void main(String[] args){
+		double[] valSolFinal;
+		Integer cont = 0;
 		CargarRed cargarRed = new CargarRed();
 		SustrateNetwork network = cargarRed.redFisica;
 		VirtualNetwork virtualNetwork = cargarRed.redVirtual;
@@ -31,7 +36,6 @@ public class MainVone {
 				.withProperty("populationSize", 50)
 				.withProperty("withReplacement", true)
 				.withProperty("operator", "hux+bf")
-				.withProperty("atributoNuevo", "jean")
 				//valor por defecto hux.rate 1
 				.withProperty("hux.rate", 1)
 				//valor por defecto 0.01
@@ -48,22 +52,60 @@ public class MainVone {
 		
 		 //new Plot().add("NSGAII", result).show(); 
 		System.out.println("cantidad del result " + result.size());
+		valSolFinal = new double [result.size()];
 		for (int i = 0; i < result.size(); i++) { 
 			System.out.format("Solucion %s%n", i);
 			Solution solution = result.get(i);
 			
+			
 			if(!solution.violatesConstraints()){
 				double[] objectives = solution.getObjectives();
+				double[] objNormalizados = new double[solution.getObjectives().length];
+				double sum = 0.0;
+				Integer cantFSUtilizado = 0;
+				Integer maxCPU = Integer.MIN_VALUE;
+				for(VirtualEdge vn : virtualNetwork.getEnlacesVirtuales()){
+					sum = sum + vn.getCantidadFS();
+				}
+				SustrateNetwork redFinal = (SustrateNetwork)solution.getAttribute("sustrateMapeada");
+				for(SustrateNode nodo : redFinal.getNodosFisicos()){
+					if(nodo.getCapacidadCPU()>maxCPU){
+						maxCPU = nodo.getCapacidadCPU();
+					}
+				}
+				for(SustrateEdge edge : redFinal.getEnlacesFisicos()){
+					for(Integer k= 0; k<redFinal.getCantidadFS(); k++){
+						if(edge.getFrequencySlot()[k]){
+							cantFSUtilizado++;
+						}
+					}
+				}
+				
 				// negate objectives to return them to their maximized form
 				//objectives = Vector.negate(objectives);
-				System.out.println("Valor Funcion Obj 1:");
-				System.out.println(objectives[0]);
-				System.out.println("Valor Funcion Obj 2:");
-				System.out.println(objectives[1]);
-				System.out.println("Valor Funcion Obj 3:");
-				System.out.println(objectives[2]);
-				System.out.println("Valor Funcion Obj 4:");
-				System.out.println(objectives[3]);
+				//Normalizacion de los valores de la funcion objetivo
+				//Normalizacion de la primera funcion objetivo
+				objNormalizados[0] = (objectives[0]/(redFinal.getEnlacesFisicos().size()*sum));
+				//Normalizacion del segundo objetivo
+				objNormalizados[1]= (objectives[1]/(redFinal.getCantidadFS()*((redFinal.getEnlacesFisicos().size())-1)));
+				//Normalizacion del tercer objetivo
+				objNormalizados[2]= (objectives[2]/maxCPU);
+				//Normalizamos el 4to Objetivo
+				objNormalizados[3]= (objectives[3]/redFinal.getCantidadFS());
+				//Pasamos a calcular su distancia al eje
+				double finalVal= Math.sqrt(Math.pow(objNormalizados[0], 2) + Math.pow(objNormalizados[1],2) 
+				+ Math.pow(objNormalizados[2], 2) + Math.pow(objNormalizados[3],2) );
+				valSolFinal[cont] = finalVal;
+				cont++;
+				System.out.println("Valor Funcion Obj 1: Val Normalizado");
+				System.out.println(objectives[0] + " : " +objNormalizados[0]);
+				System.out.println("Valor Funcion Obj 2: Val Normalizado");
+				System.out.println(objectives[1] + " : " +objNormalizados[1]);
+				System.out.println("Valor Funcion Obj 3: Val Normalizado");
+				System.out.println(objectives[2] + " : " +objNormalizados[2]);
+				System.out.println("Valor Funcion Obj 4: Val Normalizado");
+				System.out.println(objectives[3]+ " : " +objNormalizados[3]);
+				System.out.println("Valor Final " + finalVal);
 				System.out.println("Matriz solucion");
 				solucionVariable = solution.getVariable(0).toString();
 				System.out.println(solucionVariable);
@@ -92,6 +134,22 @@ public class MainVone {
 				
 			}
 			
+		}
+		Integer posicionFinal = 0;
+		Double valSolucionOptima= new Double(String.valueOf(Integer.MAX_VALUE));
+		for(cont = 0; cont<valSolFinal.length; cont++){
+			if(valSolucionOptima>valSolFinal[cont]){
+				valSolucionOptima= valSolFinal[cont];
+				posicionFinal = cont;
+			}
+		}
+		System.out.println("Valor Solucion Elegida: " + valSolucionOptima);
+		Solution solFinalElegida = result.get(posicionFinal);
+		SustrateNetwork redFinalEleg = (SustrateNetwork)solFinalElegida.getAttribute("sustrateMapeada");
+		if(redFinalEleg != null){
+			System.out.println("Solucion Elegida: " + redFinalEleg.toString());
+		}else{
+			System.out.println("No se encontro solucion");
 		}
 		new Plot().add("NSGAII", result).show();
 		
