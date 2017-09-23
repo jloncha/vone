@@ -16,6 +16,7 @@ import org.moeaframework.mymodel.VirtualNetwork;
 
 import py.una.pol.vone.kshortestpath.Edge;
 import py.una.pol.vone.kshortestpath.Path;
+import py.una.pol.vone.nsga.SolucionMoea;
 import py.una.pol.vone.nsga.VoneNsgaII;
 import py.una.pol.vone.util.CargarRed;
 import py.una.pol.vone.util.MoeaUtil;
@@ -76,7 +77,8 @@ public class AlgoritmoNSGA {
 					objectives = solution.getObjectives();
 					objNormalizados = new double[solution.getObjectives().length];
 					//Calculasmos la suma de cantidad de Requerimientos de la VR
-					SustrateNetwork redFinal = (SustrateNetwork) solution.getAttribute("sustrateMapeada");
+					SolucionMoea solucionMoea = (SolucionMoea)solution.getAttribute("solucionMoea");
+					SustrateNetwork redFinal = solucionMoea.getSustrateNetwork();
 					for (VirtualEdge vn : redVirtual.getEnlacesVirtuales()) {
 						sum = sum + vn.getCantidadFS();
 					}
@@ -109,10 +111,6 @@ public class AlgoritmoNSGA {
 							+ Math.pow(objNormalizados[2], 2) + Math.pow(objNormalizados[3], 2));
 					valSolFinal[i] = finalVal;
 					solucionVariable = solution.getVariable(0).toString();
-					listPath = (List<Path>) solution.getAttribute("listPath");
-					for (int j = 0; j < listPath.size(); j++) {
-						System.out.println(listPath.get(j));
-					}
 				}
 			}
 			//Seleccionamos el menor valor, que sera nuestra solucion final (mas cercano al origen)
@@ -123,7 +121,8 @@ public class AlgoritmoNSGA {
 				}
 			}
 			Solution solFinalElegida = result.get(posicionFinal);
-			SustrateNetwork redFinalEleg = (SustrateNetwork) solFinalElegida.getAttribute("sustrateMapeada");
+			SolucionMoea solucionMoea = (SolucionMoea)solFinalElegida.getAttribute("solucionMoea");
+			SustrateNetwork redFinalEleg = solucionMoea.getSustrateNetwork();
 			if (redFinalEleg != null) {
 				resp = 0;
 				//Procedemos a asignar los valores en la red virtual
@@ -137,20 +136,15 @@ public class AlgoritmoNSGA {
 					}
 				}
 				//cargamos los enlaces
-				for(VirtualEdge enlace: redVirtual.getEnlacesVirtuales()){
+				for(Integer z=0;z<redVirtual.getEnlacesVirtuales().size(); z++ ){
 					//recorremos todos los nodos y buscamos en los paths
-					for(Path path: listPath){
-						for(Edge enlaceP : path.getEdges()){
-							if(enlace.getNodoUno().getNodoFisico().getIdentificador() == Integer.valueOf(enlaceP.getFromNode()) &&
-									enlace.getNodoDos().getNodoFisico().getIdentificador() == Integer.valueOf(enlaceP.getToNode())){
-								/*for(){
-									
-								}*/
-							}
+					for(VirtualEdge enlaceSolucion : solucionMoea.getVirtualEdge()){
+						if(enlaceSolucion.getIdentificador() == redVirtual.getEnlacesVirtuales().get(z).getIdentificador()){
+							redVirtual.getEnlacesVirtuales().get(z).setEnlaceFisico(enlaceSolucion.getEnlaceFisico());
 						}
 					}
 				}
-				
+				redVirtual.setMapeado(true);
 			}
 			
 		} catch (Exception ex) {
