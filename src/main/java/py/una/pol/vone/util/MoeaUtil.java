@@ -58,8 +58,10 @@ public class MoeaUtil implements Serializable{
 		
 		int identificador1, identificador2, nodoFisicoId1 = 0, nodoFisicoId2 = 0;
 		SolucionMoea solucion = new SolucionMoea();
+		List<VirtualEdge> virtualList = new ArrayList<>();
 		List<Path> listPath = new ArrayList<>();
 		solucion.setList(listPath);
+		solucion.setVirtualEdge(virtualList);
 		Rmsa rmsa = new Rmsa();
 		SustrateNetwork network = null;
 		for (VirtualEdge virtualEdge : parameters.getRedVirtual().getEnlacesVirtuales()) {
@@ -79,7 +81,7 @@ public class MoeaUtil implements Serializable{
 				//si no existe path o no se pudo realizar el rmsa devolver con constrains
 				network = rmsa.realizarRmsa(networkOrigin, String.valueOf(nodoFisicoId1), 
 						String.valueOf(nodoFisicoId2), parameters.getKshort(), virtualEdge.getCantidadFS(),
-						solucion);
+						solucion, virtualEdge);
 				if(network == null){
 					//System.out.println("red de sustrato null despues de invocar al rsa");
 					return null;

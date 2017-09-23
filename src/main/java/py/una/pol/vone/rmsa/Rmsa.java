@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.moeaframework.mymodel.SustrateEdge;
 import org.moeaframework.mymodel.SustrateNetwork;
+import org.moeaframework.mymodel.VirtualEdge;
 
 import py.una.pol.vone.excepcions.ValidationsExceptions;
 import py.una.pol.vone.kshortestpath.Edge;
@@ -23,7 +24,8 @@ public class Rmsa {
 	
 	@SuppressWarnings("rawtypes")
 	public SustrateNetwork realizarRmsa(SustrateNetwork sustrateNetwork, String sourceNode, 
-			String targetNode, Integer k, Integer slotRequerido, SolucionMoea solucionMoea) throws ValidationsExceptions {
+			String targetNode, Integer k, Integer slotRequerido, SolucionMoea solucionMoea,
+			VirtualEdge virtualEdge) throws ValidationsExceptions {
 		
 		try{
 			//validaciones de argumentos
@@ -132,6 +134,19 @@ public class Rmsa {
 		        	if(!identificadorEnlace.equals(-1)){
 		        		for (SustrateEdge sustrateEdge : sustrateNetwork.getEnlacesFisicos()) {
 							if(identificadorEnlace.equals(sustrateEdge.getIdentificador())){
+								try{
+									virtualEdge.getEnlaceFisico().add(sustrateEdge);
+								} catch(Exception e){
+									e.printStackTrace();
+									System.out.println(sustrateEdge);
+									for (int j = 0; j < virtualEdge.getEnlaceFisico().size(); j++) {
+										System.out.println(virtualEdge.getEnlaceFisico().get(i).getIdentificador());
+										System.out.println(virtualEdge.getEnlaceFisico().get(i).getNombre());
+										System.out.println(ksp.get(listaSeleccionados.get(5)));
+									}
+									System.out.println(virtualEdge.getEnlaceFisico());
+								}
+								
 								for (int j = 0; j < slotRequerido; j++) {
 									sustrateEdge.getFrequencySlot()[Integer.valueOf(listaSeleccionados.get(0)) + j] = true;
 								}
@@ -143,6 +158,7 @@ public class Rmsa {
 		        List<Path> listPath = solucionMoea.getList();
 		        listPath.add(ksp.get(listaSeleccionados.get(5)));
 		        solucionMoea.setList(listPath);
+		        solucionMoea.getVirtualEdge().add(virtualEdge);
 		        this.evaluatefuntion1 = evaluatefuntion1 + (double) (ksp.get(listaSeleccionados.get(5)).size() * slotRequerido);
 	        }
 	        

@@ -196,7 +196,7 @@ public class Core {
 					}
 				}
 				bestSolution.setSustrateNetwork(calculateEdge.realizarRmsa(bestSolution.getSustrateNetwork(), String.valueOf(beforeNode.getIdentificador()), String.valueOf(actualSN.getIdentificador()), 5, qantSolts
-						, new SolucionMoea()));
+						, new SolucionMoea(), null));
 			}
 			virtualPath.add(nodoVirtual);
 			sustratePath.add(actualSN);

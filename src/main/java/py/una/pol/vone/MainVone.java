@@ -14,6 +14,7 @@ import org.moeaframework.mymodel.VirtualEdge;
 import org.moeaframework.mymodel.VirtualNetwork;
 
 import py.una.pol.vone.kshortestpath.Path;
+import py.una.pol.vone.nsga.SolucionMoea;
 import py.una.pol.vone.nsga.VoneNsgaII;
 import py.una.pol.vone.util.CargarRed;
 
@@ -56,7 +57,7 @@ public class MainVone {
 		for (int i = 0; i < result.size(); i++) { 
 			System.out.format("Solucion %s%n", i);
 			Solution solution = result.get(i);
-			
+			SolucionMoea solucionMoea = (SolucionMoea)solution.getAttribute("solucionMoea");
 			
 			if(!solution.violatesConstraints()){
 				double[] objectives = solution.getObjectives();
@@ -67,7 +68,8 @@ public class MainVone {
 				for(VirtualEdge vn : virtualNetwork.getEnlacesVirtuales()){
 					sum = sum + vn.getCantidadFS();
 				}
-				SustrateNetwork redFinal = (SustrateNetwork)solution.getAttribute("sustrateMapeada");
+				
+				SustrateNetwork redFinal = solucionMoea.getSustrateNetwork();
 				for(SustrateNode nodo : redFinal.getNodosFisicos()){
 					if(nodo.getCapacidadCPU()>maxCPU){
 						maxCPU = nodo.getCapacidadCPU();
@@ -97,7 +99,7 @@ public class MainVone {
 				+ Math.pow(objNormalizados[2], 2) + Math.pow(objNormalizados[3],2) );
 				valSolFinal[cont] = finalVal;
 				cont++;
-				System.out.println("Valor Funcion Obj 1: Val Normalizado");
+				/*System.out.println("Valor Funcion Obj 1: Val Normalizado");
 				System.out.println(objectives[0] + " : " +objNormalizados[0]);
 				System.out.println("Valor Funcion Obj 2: Val Normalizado");
 				System.out.println(objectives[1] + " : " +objNormalizados[1]);
@@ -112,25 +114,12 @@ public class MainVone {
 				System.out.println("RED FISICA Inicial");
 				System.out.println(solution.getAttribute("sustrateOriginal"));
 				System.out.println("RED FISICA FINAL");
-				System.out.println(solution.getAttribute("sustrateMapeada"));
+				System.out.println(solucionMoea.getSustrateNetwork());
 				System.out.println("LISTA DE PATH");
-				@SuppressWarnings("unchecked")
-				List<Path> listPath = (List<Path>) solution.getAttribute("listPath");
+				List<Path> listPath = solucionMoea.getList();
 				for (int j = 0; j < listPath.size(); j++) {
 					System.out.println(listPath.get(j));	
-				}
-				//imprimir valores
-				int k = 0;
-				/*System.out.println("[");
-				for (int h = 0; h < 3; h++) {
-					for (int j = 0; j < 10; j++) {
-						System.out.print(solucionVariable.charAt(k) + " ");
-						k++;
-					}
-					System.out.println("");
-				}
-				System.out.println("]");*/
-				//System.out.println(solution.getVariable(i));
+				}*/
 				
 			}
 			
@@ -145,13 +134,15 @@ public class MainVone {
 		}
 		System.out.println("Valor Solucion Elegida: " + valSolucionOptima);
 		Solution solFinalElegida = result.get(posicionFinal);
-		SustrateNetwork redFinalEleg = (SustrateNetwork)solFinalElegida.getAttribute("sustrateMapeada");
-		if(redFinalEleg != null){
+		SolucionMoea solucionMoea = (SolucionMoea)solFinalElegida.getAttribute("solucionMoea");
+		if(solucionMoea != null){
+			SustrateNetwork redFinalEleg = solucionMoea.getSustrateNetwork();
+			//System.out.println("################### " + solucionMoea.getVirtualEdge());
 			System.out.println("Solucion Elegida: " + redFinalEleg.toString());
 		}else{
 			System.out.println("No se encontro solucion");
 		}
-		new Plot().add("NSGAII", result).show();
+		//new Plot().add("NSGAII", result).show();
 		
 	}
 }

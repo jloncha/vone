@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.moeaframework.mymodel.SustrateNetwork;
+import org.moeaframework.mymodel.VirtualEdge;
 
 import py.una.pol.vone.kshortestpath.Path;
 
@@ -15,6 +16,7 @@ public class SolucionMoea implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private double[] functions;
 	private SustrateNetwork sustrateNetwork;
+	private List<VirtualEdge> virtualEdge;
 	List<Path> list;
 	
 	
@@ -52,4 +54,15 @@ public class SolucionMoea implements Serializable {
 	public void setList(List<Path> list) {
 		this.list = list;
 	}
+
+
+	public List<VirtualEdge> getVirtualEdge() {
+		return virtualEdge;
+	}
+
+
+	public void setVirtualEdge(List<VirtualEdge> virtualEdge) {
+		this.virtualEdge = virtualEdge;
+	}
+
 }

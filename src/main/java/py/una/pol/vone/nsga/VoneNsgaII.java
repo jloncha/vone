@@ -1,6 +1,5 @@
 package py.una.pol.vone.nsga;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -91,8 +90,9 @@ public class VoneNsgaII extends AbstractProblem{
 			solution.setObjectives(solucion.getFunctions());
 			restricciones[parameters.getNroRestricciones() - 1] = 0;
 			solution.setAttribute("sustrateOriginal", parameters.getRedSustrato());
-			solution.setAttribute("sustrateMapeada", solucion.getSustrateNetwork());
-			solution.setAttribute("listPath", (Serializable) solucion.getList());
+			/*solution.setAttribute("sustrateMapeada", solucion.getSustrateNetwork());
+			solution.setAttribute("listPath", (Serializable) solucion.getList());*/
+			solution.setAttribute("solucionMoea", solucion);
 			/*System.out.println("*****************************");
 			System.out.println("d: " + solution.getVariable(0));
 			for (int i = 0; i < restricciones.length; i++) {
