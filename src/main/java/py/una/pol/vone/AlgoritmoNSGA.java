@@ -120,8 +120,8 @@ public class AlgoritmoNSGA {
 			}
 			Solution solFinalElegida = result.get(posicionFinal);
 			SolucionMoea solucionMoea = (SolucionMoea)solFinalElegida.getAttribute("solucionMoea");
-			SustrateNetwork redFinalEleg = solucionMoea.getSustrateNetwork();
-			if (redFinalEleg != null) {
+			if (solucionMoea != null) {
+				SustrateNetwork redFinalEleg = solucionMoea.getSustrateNetwork();
 				resp = 0;
 				//Procedemos a asignar los valores en la red virtual
 				matrizFinal =util.generateMat(EncodingUtils.getBinary(solFinalElegida.getVariable(0)), redVirtual.getEnlacesVirtuales().size(), redFisica.getNodosFisicos().size());
