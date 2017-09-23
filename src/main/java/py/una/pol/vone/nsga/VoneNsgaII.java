@@ -43,6 +43,7 @@ public class VoneNsgaII extends AbstractProblem{
 		double[] restricciones = new double[parameters.getNroRestricciones()];
 		SolucionMoea solucion = null;
 		SustrateNetwork sustrate = null;
+		VirtualNetwork virtualNetwork = null;
 		MoeaUtil util = new MoeaUtil();
 		boolean[] d = EncodingUtils.getBinary(solution.getVariable(0));
 		//boolean[] d =  {false,false,false,true,false,false,false,false,false,false,true,false,false,false,true,false,false,false,false,true,false,false,false,false};
@@ -59,6 +60,7 @@ public class VoneNsgaII extends AbstractProblem{
 		}*/
 		try{
 			sustrate = (SustrateNetwork) parameters.getRedSustrato().clone();
+			virtualNetwork = (VirtualNetwork) parameters.getRedVirtual().clone();
 		} catch(CloneNotSupportedException ex){
 			ex.printStackTrace();
 		}
@@ -74,7 +76,7 @@ public class VoneNsgaII extends AbstractProblem{
 		
 		if(!band){
 			
-			solucion = util.getFuncions(mat, parameters, sustrate);
+			solucion = util.getFuncions(mat, parameters, sustrate, virtualNetwork);
 			//System.out.println(parameters.getRedSustrato());
 			
 		} else {

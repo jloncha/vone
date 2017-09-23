@@ -134,19 +134,9 @@ public class Rmsa {
 		        	if(!identificadorEnlace.equals(-1)){
 		        		for (SustrateEdge sustrateEdge : sustrateNetwork.getEnlacesFisicos()) {
 							if(identificadorEnlace.equals(sustrateEdge.getIdentificador())){
-								try{
-									virtualEdge.getEnlaceFisico().add(sustrateEdge);
-								} catch(Exception e){
-									e.printStackTrace();
-									System.out.println(sustrateEdge);
-									for (int j = 0; j < virtualEdge.getEnlaceFisico().size(); j++) {
-										System.out.println(virtualEdge.getEnlaceFisico().get(i).getIdentificador());
-										System.out.println(virtualEdge.getEnlaceFisico().get(i).getNombre());
-										System.out.println(ksp.get(listaSeleccionados.get(5)));
-									}
-									System.out.println(virtualEdge.getEnlaceFisico());
-								}
-								
+								virtualEdge.getEnlaceFisico().add(sustrateEdge);
+								//System.out.println("Longitud enlaces fisicos en el edge virtual " + virtualEdge.
+										//getEnlaceFisico().size());
 								for (int j = 0; j < slotRequerido; j++) {
 									sustrateEdge.getFrequencySlot()[Integer.valueOf(listaSeleccionados.get(0)) + j] = true;
 								}
