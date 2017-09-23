@@ -1,8 +1,5 @@
 package py.una.pol.vone.nsga;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.AbstractProblem;
@@ -20,7 +17,7 @@ public class VoneNsgaII extends AbstractProblem{
 	}*/
 	
 	public VoneNsgaII() {
-		super(1, 3, 4);
+		super(1, 4, 3);
 	}
 
 	public void cargarParametros(Integer nroObjetivos, Integer nroRestricciones, Integer nroVariable,
@@ -122,9 +119,7 @@ public class VoneNsgaII extends AbstractProblem{
 		Integer nroVariableDecision = parameters.getNroVariableDecision();
 		Integer nodosFisicos = parameters.getNodosFisicos();
 		Integer nodosVirtuales = parameters.getNodosVirtuales();
-		
-		Map<String, Object> nombreMap = new HashMap<String, Object>();
-		nombreMap.put("redSustrato", "est es una prueba");
+
 		Solution solution = new Solution(nroVariableDecision, nroObjetivos, nroRestricciones);
 		solution.setVariable(0, EncodingUtils.newBinary(nodosFisicos * nodosVirtuales));
 		
