@@ -4,10 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.moeaframework.mymodel.SustrateNetwork;
-import org.moeaframework.mymodel.VirtualEdge;
-import org.moeaframework.mymodel.VirtualNetwork;
-
 import py.una.pol.vone.kshortestpath.Path;
 import py.una.pol.vone.nsga.MOEAParameters;
 import py.una.pol.vone.nsga.Objetivo2;
@@ -15,6 +11,9 @@ import py.una.pol.vone.nsga.Objetivo3;
 import py.una.pol.vone.nsga.Objetivo4;
 import py.una.pol.vone.nsga.SolucionMoea;
 import py.una.pol.vone.rmsa.Rmsa;
+import py.una.pol.vone.simulator.model.SustrateNetwork;
+import py.una.pol.vone.simulator.model.VirtualEdge;
+import py.una.pol.vone.simulator.model.VirtualNetwork;
 
 public class MoeaUtil implements Serializable{
 

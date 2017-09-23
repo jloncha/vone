@@ -3,10 +3,9 @@ package py.una.pol.vone.nsga;
 import java.io.Serializable;
 import java.util.List;
 
-import org.moeaframework.mymodel.SustrateNetwork;
-import org.moeaframework.mymodel.VirtualEdge;
-
 import py.una.pol.vone.kshortestpath.Path;
+import py.una.pol.vone.simulator.model.SustrateNetwork;
+import py.una.pol.vone.simulator.model.VirtualEdge;
 
 public class SolucionMoea implements Serializable {
 

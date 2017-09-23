@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import org.moeaframework.mymodel.SustrateEdge;
-import org.moeaframework.mymodel.SustrateNetwork;
-import org.moeaframework.mymodel.SustrateNode;
+import py.una.pol.vone.simulator.model.SustrateEdge;
+import py.una.pol.vone.simulator.model.SustrateNetwork;
+import py.una.pol.vone.simulator.model.SustrateNode;
 
 /**
  * Clase utilizada para generar las topologias de redes virtuales.

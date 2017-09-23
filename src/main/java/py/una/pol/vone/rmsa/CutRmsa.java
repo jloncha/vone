@@ -5,10 +5,9 @@ import java.util.List;
 
 import javax.xml.bind.ValidationException;
 
-import org.moeaframework.mymodel.SustrateEdge;
-import org.moeaframework.mymodel.SustrateNetwork;
-
 import py.una.pol.vone.kshortestpath.Path;
+import py.una.pol.vone.simulator.model.SustrateEdge;
+import py.una.pol.vone.simulator.model.SustrateNetwork;
 
 /**
  * Esta clase define los metodos para obtener los puntos de cortes de una red fisica

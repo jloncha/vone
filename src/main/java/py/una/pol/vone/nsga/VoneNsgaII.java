@@ -5,10 +5,10 @@ import java.util.Map;
 
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
-import org.moeaframework.mymodel.SustrateNetwork;
-import org.moeaframework.mymodel.VirtualNetwork;
 import org.moeaframework.problem.AbstractProblem;
 
+import py.una.pol.vone.simulator.model.SustrateNetwork;
+import py.una.pol.vone.simulator.model.VirtualNetwork;
 import py.una.pol.vone.util.MoeaUtil;
 
 public class VoneNsgaII extends AbstractProblem{

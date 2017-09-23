@@ -3,12 +3,11 @@ package py.una.pol.vone.rmsa;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.moeaframework.mymodel.SustrateEdge;
-import org.moeaframework.mymodel.SustrateNetwork;
-import org.moeaframework.mymodel.SustrateNode;
-
 import py.una.pol.vone.kshortestpath.Edge;
 import py.una.pol.vone.kshortestpath.Path;
+import py.una.pol.vone.simulator.model.SustrateEdge;
+import py.una.pol.vone.simulator.model.SustrateNetwork;
+import py.una.pol.vone.simulator.model.SustrateNode;
 
 /**
  * Esta clase define los metodos para obtener realizar la sumatoria de desalinacion de los vecinos del path

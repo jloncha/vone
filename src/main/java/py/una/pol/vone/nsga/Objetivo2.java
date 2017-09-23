@@ -1,7 +1,7 @@
 package py.una.pol.vone.nsga;
 
-import org.moeaframework.mymodel.SustrateEdge;
-import org.moeaframework.mymodel.SustrateNetwork;
+import py.una.pol.vone.simulator.model.SustrateEdge;
+import py.una.pol.vone.simulator.model.SustrateNetwork;
 
 public class Objetivo2 {
 	

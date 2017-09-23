@@ -4,20 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.moeaframework.Executor;
-import org.moeaframework.analysis.plot.Plot;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
-import org.moeaframework.mymodel.SustrateEdge;
-import org.moeaframework.mymodel.SustrateNetwork;
-import org.moeaframework.mymodel.SustrateNode;
-import org.moeaframework.mymodel.VirtualEdge;
-import org.moeaframework.mymodel.VirtualNetwork;
 
-import py.una.pol.vone.kshortestpath.Edge;
 import py.una.pol.vone.kshortestpath.Path;
 import py.una.pol.vone.nsga.SolucionMoea;
 import py.una.pol.vone.nsga.VoneNsgaII;
+import py.una.pol.vone.simulator.model.SustrateEdge;
+import py.una.pol.vone.simulator.model.SustrateNetwork;
+import py.una.pol.vone.simulator.model.SustrateNode;
+import py.una.pol.vone.simulator.model.VirtualEdge;
+import py.una.pol.vone.simulator.model.VirtualNetwork;
 import py.una.pol.vone.util.CargarRed;
 import py.una.pol.vone.util.MoeaUtil;
 

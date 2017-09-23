@@ -1,14 +1,13 @@
 package py.una.pol.vone.util;
 
 import java.util.ArrayList;
-import java.util.Random;
 
-import org.moeaframework.mymodel.SustrateEdge;
-import org.moeaframework.mymodel.SustrateNetwork;
-import org.moeaframework.mymodel.SustrateNode;
-import org.moeaframework.mymodel.VirtualEdge;
-import org.moeaframework.mymodel.VirtualNetwork;
-import org.moeaframework.mymodel.VirtualNode;
+import py.una.pol.vone.simulator.model.SustrateEdge;
+import py.una.pol.vone.simulator.model.SustrateNetwork;
+import py.una.pol.vone.simulator.model.SustrateNode;
+import py.una.pol.vone.simulator.model.VirtualEdge;
+import py.una.pol.vone.simulator.model.VirtualNetwork;
+import py.una.pol.vone.simulator.model.VirtualNode;
 
 public class CargarRed {
 	

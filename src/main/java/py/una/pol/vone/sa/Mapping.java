@@ -1,7 +1,7 @@
 package py.una.pol.vone.sa;
 
-import org.moeaframework.mymodel.SustrateNode;
-import org.moeaframework.mymodel.VirtualNode;
+import py.una.pol.vone.simulator.model.SustrateNode;
+import py.una.pol.vone.simulator.model.VirtualNode;
 
 /**
  * Clase que representa una solucion
