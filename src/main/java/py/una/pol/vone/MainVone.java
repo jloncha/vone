@@ -1,10 +1,7 @@
 package py.una.pol.vone;
 
 
-import java.util.List;
-
 import org.moeaframework.Executor;
-import org.moeaframework.analysis.plot.Plot;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 import org.moeaframework.mymodel.SustrateEdge;
@@ -13,7 +10,6 @@ import org.moeaframework.mymodel.SustrateNode;
 import org.moeaframework.mymodel.VirtualEdge;
 import org.moeaframework.mymodel.VirtualNetwork;
 
-import py.una.pol.vone.kshortestpath.Path;
 import py.una.pol.vone.nsga.SolucionMoea;
 import py.una.pol.vone.nsga.VoneNsgaII;
 import py.una.pol.vone.util.CargarRed;

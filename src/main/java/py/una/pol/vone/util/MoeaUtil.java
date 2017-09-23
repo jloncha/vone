@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.moeaframework.mymodel.SustrateNetwork;
 import org.moeaframework.mymodel.VirtualEdge;
+import org.moeaframework.mymodel.VirtualNetwork;
 
 import py.una.pol.vone.kshortestpath.Path;
 import py.una.pol.vone.nsga.MOEAParameters;
@@ -34,7 +35,8 @@ public class MoeaUtil implements Serializable{
 		return mat;
 	}
 	
-	public SolucionMoea getFuncions(boolean[][] mat, MOEAParameters parameters, SustrateNetwork networkOrigin) {
+	public SolucionMoea getFuncions(boolean[][] mat, MOEAParameters parameters, SustrateNetwork networkOrigin,
+			VirtualNetwork virtualNetwork) {
 		/** para la funcion objetivo 1: desde la fila 1 de la matriz, buscar todos los enlaces de la red virtual que 
 		 * parten de ese punto, evitar ciclos(esto es por ejemplo si ya se obtuvo enlace de 1 a 2, no obtener enlace de 2 a 1)
 		 * una vez que se obtiene un enlace invocar al algoritmo del rsa, con este valor del path calcular la funcion
@@ -64,7 +66,7 @@ public class MoeaUtil implements Serializable{
 		solucion.setVirtualEdge(virtualList);
 		Rmsa rmsa = new Rmsa();
 		SustrateNetwork network = null;
-		for (VirtualEdge virtualEdge : parameters.getRedVirtual().getEnlacesVirtuales()) {
+		for (VirtualEdge virtualEdge : virtualNetwork.getEnlacesVirtuales()) {
 			identificador1 = virtualEdge.getNodoUno().getIdentificador();
 			identificador2 = virtualEdge.getNodoDos().getIdentificador();
 			for (int i = 0; i < mat[identificador1].length; i++) {
