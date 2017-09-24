@@ -40,7 +40,8 @@ public class AlgoritmoNSGA {
 	 * @return 0 si fue mapeado, 1 caso contrario
 	 */
 	public static int moeaDinamico(SustrateNetwork redFisica, VirtualNetwork redVirtual) {
-		
+		//System.out.println("*******************INICIA**********************");
+		//System.out.println(redVirtual.hashCode());
 		double[] valSolFinal;
 		int resp = 1;
 		Integer posicionFinal = 0;
@@ -60,12 +61,12 @@ public class AlgoritmoNSGA {
 			nsga.cargarParametros(4, 3, 1, redFisica.getNroNodos(), redVirtual.getNroNodos(), redFisica, redVirtual, 2);
 			// Seteamos los valores del framework
 			NondominatedPopulation result = new Executor().withProblemClass(VoneNsgaII.class).withAlgorithm("NSGAII")
-					.withProperty("populationSize", 50).withProperty("withReplacement", true)
+					.withProperty("populationSize", 100).withProperty("withReplacement", true)
 					.withProperty("operator", "hux+bf")
 					// valor por defecto hux.rate 1
 					.withProperty("hux.rate", 1)
 					// valor por defecto 0.01
-					.withProperty("bf.rate", 0.01).withMaxEvaluations(100000).distributeOnAllCores().run();
+					.withProperty("bf.rate", 0.01).withMaxEvaluations(30000).distributeOnAllCores().run();
 			String solucionVariable = "";
 			valSolFinal = new double[result.size()];
 			for (int i = 0; i < result.size(); i++) {
@@ -124,12 +125,15 @@ public class AlgoritmoNSGA {
 				SustrateNetwork redFinalEleg = solucionMoea.getSustrateNetwork();
 				resp = 0;
 				//Procedemos a asignar los valores en la red virtual
-				matrizFinal =util.generateMat(EncodingUtils.getBinary(solFinalElegida.getVariable(0)), redVirtual.getEnlacesVirtuales().size(), redFisica.getNodosFisicos().size());
+				matrizFinal =util.generateMat(EncodingUtils.getBinary(solFinalElegida.getVariable(0)), redVirtual.getNodosVirtuales().size(), redFisica.getNodosFisicos().size());
+				//System.out.println("matriz final " + solFinalElegida.getVariable(0));
+				//System.out.println("Red Fisica" + solucionMoea.getSustrateNetwork());
 				//Mapeamos a los nodos fisicos
-				for(int i= 0; i<redVirtual.getEnlacesVirtuales().size(); i++){
+				for(int i= 0; i<redVirtual.getNodosVirtuales().size(); i++){
 					for (int j = 0; j < redFisica.getNodosFisicos().size(); j++) {
 						if(matrizFinal[i][j]){
 							redVirtual.getNodosVirtuales().get(i).setNodoFisico(redFisica.getNodosFisicos().get(j));
+							redVirtual.getNodosVirtuales().get(i).setMapeado(true);
 						}
 					}
 				}
@@ -139,12 +143,19 @@ public class AlgoritmoNSGA {
 					for(VirtualEdge enlaceSolucion : solucionMoea.getVirtualEdge()){
 						if(enlaceSolucion.getIdentificador() == redVirtual.getEnlacesVirtuales().get(z).getIdentificador()){
 							redVirtual.getEnlacesVirtuales().get(z).setEnlaceFisico(enlaceSolucion.getEnlaceFisico());
+							redVirtual.getEnlacesVirtuales().get(z).setMapeado(true);
+							redVirtual.getEnlacesVirtuales().get(z).setPosicionFisica(enlaceSolucion.getPosicionFisica());
 						}
 					}
 				}
 				redVirtual.setMapeado(true);
+			} else{
+				System.out.println("RECHAZO");
 			}
+			//System.out.println(redVirtual);
 			
+			//System.out.println(redVirtual.hashCode());
+			//System.out.println("***************************FIN*****************");
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
