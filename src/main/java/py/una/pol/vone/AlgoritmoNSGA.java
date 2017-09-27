@@ -21,169 +21,167 @@ import py.una.pol.vone.util.MoeaUtil;
 
 /*****
  * Clase que contiene los metodo principal del algoritmo
- * 
  * @author Jean
  *
  */
 public class AlgoritmoNSGA {
 
+	
 	CargarRed cargarRed = new CargarRed();
-
-	public AlgoritmoNSGA() {
-
+	
+	public AlgoritmoNSGA(){
+		
 	}
-
+	
 	/****
 	 * Metodo principal que recibe la red virtual y la red fisica para resolver
-	 * 
-	 * @param redFisica
-	 *            red fisica sustrato
-	 * @param redVirtual
-	 *            la red que se va a mapear
+	 * @param redFisica	red fisica sustrato
+	 * @param redVirtual la red que se va a mapear
 	 * @return 0 si fue mapeado, 1 caso contrario
 	 */
 	public static int moeaDinamico(SustrateNetwork redFisica, VirtualNetwork redVirtual) {
-		// System.out.println("*******************INICIA**********************");
-		// System.out.println(redVirtual.hashCode());
+		//System.out.println("*******************INICIA**********************");
+		//System.out.println(redVirtual.hashCode());
 		int resp = 1;
 		VoneNsgaII nsga = new VoneNsgaII();
 		nsga.cargarParametros(4, 3, 1, redFisica.getNroNodos(), redVirtual.getNroNodos(), redFisica, redVirtual, 2);
 		try {
-
-			double[] valSolFinal;
-
-			Integer posicionFinal = 0;
-			double[] objectives;
-			double[] objNormalizados;
-			double sum = 0.0;
-			Integer cantFSUtilizado = 0;
-			Integer maxCPU = Integer.MIN_VALUE;
-			Double valSolucionOptima = new Double(String.valueOf(Integer.MAX_VALUE));
-			boolean[][] matrizFinal;
-			List<Path> listPath = new ArrayList<>();
-
-			MoeaUtil util = new MoeaUtil();
-
-			// Cargamos los parametros de NSGA
-			// 4 objetivos, 3 restricciones, 1 variable y 2 caminos de
-			// kshortestpath
-
-			// Seteamos los valores del framework
-			NondominatedPopulation result = new Executor().withProblemClass(VoneNsgaII.class).withAlgorithm("NSGAII")
-					.withProperty("populationSize", 25).withProperty("withReplacement", true)
-					.withProperty("operator", "hux+bf").withProperty("m", redVirtual.getNroNodos())
-					.withProperty("n", redFisica.getNroNodos())
-					// valor por defecto hux.rate 1
-					.withProperty("hux.rate", 1)
-					// valor por defecto 0.01
-					.withProperty("bf.rate", 0.01).withMaxEvaluations(100).distributeOnAllCores().run();
-			String solucionVariable = "";
-			valSolFinal = new double[result.size()];
-			for (int i = 0; i < result.size(); i++) {
-				Solution solution = result.get(i);
-				// Si la solucion cumple con todas las restricciones
-				if (!solution.violatesConstraints()) {
-					objectives = solution.getObjectives();
-					objNormalizados = new double[solution.getObjectives().length];
-					// Calculasmos la suma de cantidad de Requerimientos de la
-					// VR
-					SolucionMoea solucionMoea = (SolucionMoea) solution.getAttribute("solucionMoea");
-					SustrateNetwork redFinal = solucionMoea.getSustrateNetwork();
-					for (VirtualEdge vn : redVirtual.getEnlacesVirtuales()) {
-						sum = sum + vn.getCantidadFS();
-					}
-					// Calculamos la cantidad maxima de CPU asignada
-					for (SustrateNode nodo : redFinal.getNodosFisicos()) {
-						if (nodo.getCapacidadCPU() > maxCPU) {
-							maxCPU = nodo.getCapacidadCPU();
+			int intentos = 0;
+			
+			while(intentos < 5){
+				double[] valSolFinal;
+				
+				Integer posicionFinal = 0;
+				double[] objectives;
+				double[] objNormalizados;
+				double sum = 0.0;
+				Integer cantFSUtilizado = 0;
+				Integer maxCPU = Integer.MIN_VALUE;
+				Double valSolucionOptima = new Double(String.valueOf(Integer.MAX_VALUE));
+				boolean[][] matrizFinal;
+				List<Path> listPath = new ArrayList<>();
+				
+				MoeaUtil util = new MoeaUtil();
+				
+				// Cargamos los parametros de NSGA
+				// 4 objetivos, 3 restricciones, 1 variable y 2 caminos de kshortestpath 
+				
+				// Seteamos los valores del framework
+				NondominatedPopulation result = new Executor().withProblemClass(VoneNsgaII.class).withAlgorithm("NSGAII")
+						.withProperty("populationSize", 25).
+						withProperty("withReplacement", true)
+						.withProperty("operator", "hux+bf")
+						.withProperty("m", redVirtual.getNroNodos())
+						.withProperty("n", redFisica.getNroNodos())
+						// valor por defecto hux.rate 1
+						.withProperty("hux.rate", 1)
+						// valor por defecto 0.01
+						.withProperty("bf.rate", 0.01).
+						withMaxEvaluations(100).
+						distributeOnAllCores().run();
+				String solucionVariable = "";
+				valSolFinal = new double[result.size()];
+				for (int i = 0; i < result.size(); i++) {
+					Solution solution = result.get(i);
+					//Si la solucion cumple con todas las restricciones
+					if (!solution.violatesConstraints()) {
+						objectives = solution.getObjectives();
+						objNormalizados = new double[solution.getObjectives().length];
+						//Calculasmos la suma de cantidad de Requerimientos de la VR
+						SolucionMoea solucionMoea = (SolucionMoea)solution.getAttribute("solucionMoea");
+						SustrateNetwork redFinal = solucionMoea.getSustrateNetwork();
+						for (VirtualEdge vn : redVirtual.getEnlacesVirtuales()) {
+							sum = sum + vn.getCantidadFS();
 						}
+						//Calculamos la cantidad maxima de CPU asignada
+						for (SustrateNode nodo : redFinal.getNodosFisicos()) {
+							if (nodo.getCapacidadCPU() > maxCPU) {
+								maxCPU = nodo.getCapacidadCPU();
+							}
+						}
+						//Calculamos la cantidad de FS utilizados
+						for (SustrateEdge edge : redFinal.getEnlacesFisicos()) {
+							for (Integer k = 0; k < redFinal.getCantidadFS(); k++) {
+								if (edge.getFrequencySlot()[k]) {
+									cantFSUtilizado++;
+								}
+							}
+						}
+						// Normalizacion de los valores de la funcion objetivo 
+						// Normalizacion de la primera funcion objetivo (uso de enlaces)
+						objNormalizados[0] = (objectives[0] / (redFinal.getEnlacesFisicos().size() * sum));
+						// Normalizacion del segundo objetivo (fragmentacion)
+						objNormalizados[1] = (objectives[1]
+								/ (redFinal.getCantidadFS() * ((redFinal.getEnlacesFisicos().size()) - 1)));
+						// Normalizacion del tercer objetivo (balance de uso de CPU)
+						objNormalizados[2] = (objectives[2] / maxCPU);
+						// Normalizamos el cuarto Objetivo (balance de enlaces)
+						objNormalizados[3] = (objectives[3] / redFinal.getCantidadFS());
+						// Pasamos a calcular su distancia al eje
+						double finalVal = Math.sqrt(Math.pow(objNormalizados[0], 2) + Math.pow(objNormalizados[1], 2)
+								+ Math.pow(objNormalizados[2], 2) + Math.pow(objNormalizados[3], 2));
+						valSolFinal[i] = finalVal;
+						solucionVariable = solution.getVariable(0).toString();
 					}
-					// Calculamos la cantidad de FS utilizados
-					for (SustrateEdge edge : redFinal.getEnlacesFisicos()) {
-						for (Integer k = 0; k < redFinal.getCantidadFS(); k++) {
-							if (edge.getFrequencySlot()[k]) {
-								cantFSUtilizado++;
+				}
+				//Seleccionamos el menor valor, que sera nuestra solucion final (mas cercano al origen)
+				for (Integer cont = 0; cont < valSolFinal.length; cont++) {
+					if (valSolucionOptima > valSolFinal[cont]) {
+						valSolucionOptima = valSolFinal[cont];
+						posicionFinal = cont;
+					}
+				}
+				Solution solFinalElegida = result.get(posicionFinal);
+				SolucionMoea solucionMoea = (SolucionMoea)solFinalElegida.getAttribute("solucionMoea");
+				if (solucionMoea != null) {
+					SustrateNetwork redFinalEleg = solucionMoea.getSustrateNetwork();
+					resp = 0;
+					//Procedemos a asignar los valores en la red virtual
+					matrizFinal =util.generateMat(EncodingUtils.getBinary(solFinalElegida.getVariable(0)), redVirtual.getNodosVirtuales().size(), redFisica.getNodosFisicos().size());
+					//System.out.println("matriz final " + solFinalElegida.getVariable(0));
+					//System.out.println("Red Fisica" + solucionMoea.getSustrateNetwork());
+					//Mapeamos a los nodos fisicos
+					for(int i= 0; i<redVirtual.getNodosVirtuales().size(); i++){
+						for (int j = 0; j < redFisica.getNodosFisicos().size(); j++) {
+							if(matrizFinal[i][j]){
+								redVirtual.getNodosVirtuales().get(i).setNodoFisico(redFisica.getNodosFisicos().get(j));
+								redVirtual.getNodosVirtuales().get(i).setMapeado(true);
 							}
 						}
 					}
-					// Normalizacion de los valores de la funcion objetivo
-					// Normalizacion de la primera funcion objetivo (uso de
-					// enlaces)
-					objNormalizados[0] = (objectives[0] / (redFinal.getEnlacesFisicos().size() * sum));
-					// Normalizacion del segundo objetivo (fragmentacion)
-					objNormalizados[1] = (objectives[1]
-							/ (redFinal.getCantidadFS() * ((redFinal.getEnlacesFisicos().size()) - 1)));
-					// Normalizacion del tercer objetivo (balance de uso de CPU)
-					objNormalizados[2] = (objectives[2] / maxCPU);
-					// Normalizamos el cuarto Objetivo (balance de enlaces)
-					objNormalizados[3] = (objectives[3] / redFinal.getCantidadFS());
-					// Pasamos a calcular su distancia al eje
-					double finalVal = Math.sqrt(Math.pow(objNormalizados[0], 2) + Math.pow(objNormalizados[1], 2)
-							+ Math.pow(objNormalizados[2], 2) + Math.pow(objNormalizados[3], 2));
-					valSolFinal[i] = finalVal;
-					solucionVariable = solution.getVariable(0).toString();
-				}
-			}
-			// Seleccionamos el menor valor, que sera nuestra solucion final
-			// (mas cercano al origen)
-			for (Integer cont = 0; cont < valSolFinal.length; cont++) {
-				if (valSolucionOptima > valSolFinal[cont]) {
-					valSolucionOptima = valSolFinal[cont];
-					posicionFinal = cont;
-				}
-			}
-			Solution solFinalElegida = result.get(posicionFinal);
-			SolucionMoea solucionMoea = (SolucionMoea) solFinalElegida.getAttribute("solucionMoea");
-			if (solucionMoea != null) {
-				SustrateNetwork redFinalEleg = solucionMoea.getSustrateNetwork();
-				resp = 0;
-				// Procedemos a asignar los valores en la red virtual
-				matrizFinal = util.generateMat(EncodingUtils.getBinary(solFinalElegida.getVariable(0)),
-						redVirtual.getNodosVirtuales().size(), redFisica.getNodosFisicos().size());
-				// System.out.println("matriz final " +
-				// solFinalElegida.getVariable(0));
-				// System.out.println("Red Fisica" +
-				// solucionMoea.getSustrateNetwork());
-				// Mapeamos a los nodos fisicos
-				for (int i = 0; i < redVirtual.getNodosVirtuales().size(); i++) {
-					for (int j = 0; j < redFisica.getNodosFisicos().size(); j++) {
-						if (matrizFinal[i][j]) {
-							redVirtual.getNodosVirtuales().get(i).setNodoFisico(redFisica.getNodosFisicos().get(j));
-							redVirtual.getNodosVirtuales().get(i).setMapeado(true);
+					//cargamos los enlaces
+					for(Integer z=0;z<redVirtual.getEnlacesVirtuales().size(); z++ ){
+						//recorremos todos los nodos y buscamos en los paths
+						for(VirtualEdge enlaceSolucion : solucionMoea.getVirtualEdge()){
+							if(enlaceSolucion.getIdentificador() == redVirtual.getEnlacesVirtuales().get(z).getIdentificador()){
+								redVirtual.getEnlacesVirtuales().get(z).setEnlaceFisico(enlaceSolucion.getEnlaceFisico());
+								redVirtual.getEnlacesVirtuales().get(z).setMapeado(true);
+								redVirtual.getEnlacesVirtuales().get(z).setPosicionFisica(enlaceSolucion.getPosicionFisica());
+							}
 						}
 					}
+					redVirtual.setMapeado(true);
+					break;
 				}
-				// cargamos los enlaces
-				for (Integer z = 0; z < redVirtual.getEnlacesVirtuales().size(); z++) {
-					// recorremos todos los nodos y buscamos en los paths
-					for (VirtualEdge enlaceSolucion : solucionMoea.getVirtualEdge()) {
-						if (enlaceSolucion.getIdentificador() == redVirtual.getEnlacesVirtuales().get(z)
-								.getIdentificador()) {
-							redVirtual.getEnlacesVirtuales().get(z).setEnlaceFisico(enlaceSolucion.getEnlaceFisico());
-							redVirtual.getEnlacesVirtuales().get(z).setMapeado(true);
-							redVirtual.getEnlacesVirtuales().get(z)
-									.setPosicionFisica(enlaceSolucion.getPosicionFisica());
-						}
-					}
-				}
-				redVirtual.setMapeado(true);
-
+				//System.out.println("Aumento intentos: " + intentos);
+				intentos++;
+				result = null;
+				
 			}
-			// System.out.println("Aumento intentos: " + intentos);
-			result = null;
-
-			// System.out.println(redVirtual);
-
-			// System.out.println(redVirtual.hashCode());
-			// System.out.println("***************************FIN*****************");
+			
+			
+			//System.out.println(redVirtual);
+			
+			//System.out.println(redVirtual.hashCode());
+			//System.out.println("***************************FIN*****************");
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		if (resp == 1) {
-			// System.out.println("RECHAZO");
+		if(resp == 1){
+			//System.out.println("RECHAZO");
 		}
 		return resp;
-
+		
 	}
-
+	
 }
