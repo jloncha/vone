@@ -166,4 +166,10 @@ public class BitMatrix implements Variable{
 			
 		}
 	}
+
+	@Override
+	public void randomize(int m, int n) {
+		// TODO Auto-generated method stub
+		
+	}
 }

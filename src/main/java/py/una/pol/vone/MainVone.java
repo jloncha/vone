@@ -35,6 +35,8 @@ public class MainVone {
 				.withProperty("operator", "hux+bf")
 				//valor por defecto hux.rate 1
 				.withProperty("hux.rate", 1)
+				.withProperty("m", virtualNetwork.getNroNodos())
+				.withProperty("n", network.getNroNodos())
 				//valor por defecto 0.01
 				.withProperty("bf.rate", 0.01)
 				/*.withProperty("sbx.distributionIndex", 25.0)

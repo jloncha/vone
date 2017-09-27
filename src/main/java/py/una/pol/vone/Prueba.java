@@ -18,7 +18,8 @@ public class Prueba implements Serializable{
 		
 		double result = new Double(fitnes / (a*b));
 		Random r = new Random();
-		int value = r.nextInt(5)+ 10;	
-		System.out.println(value);
+		int value = r.nextInt(2);	
+		int m = 4/2;
+		System.out.println(2+2*2);
 	}
 }
