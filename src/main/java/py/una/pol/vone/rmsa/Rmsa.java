@@ -21,6 +21,19 @@ public class Rmsa {
 
 	private Double evaluatefuntion1 = 0.0;
 	
+	/**
+	 * 
+	 * 
+	 * @param sustrateNetwork red fisica
+	 * @param sourceNode nodo origen
+	 * @param targetNode nodo destino
+	 * @param k cantidad de shortest path
+	 * @param slotRequerido cantidad de slot requerido
+	 * @param solucionMoea clase que almacena una solucion
+	 * @param virtualEdge enlace virtual que hay entre ambos nodos source y target
+	 * @return la red fisica reciba, en caso de que no encuentre un camino existente retorna null
+	 * @throws ValidationsExceptions
+	 */
 	@SuppressWarnings("rawtypes")
 	public SustrateNetwork realizarRmsa(SustrateNetwork sustrateNetwork, String sourceNode, 
 			String targetNode, Integer k, Integer slotRequerido, SolucionMoea solucionMoea,

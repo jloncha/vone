@@ -85,7 +85,9 @@ public class MoeaUtil implements Serializable{
 						solucion, virtualEdge);
 				if(network == null){
 					//System.out.println("red de sustrato null despues de invocar al rsa");
-					return null;
+					//return null;
+					solucion.setRechazo(2);
+					return solucion;
 				} else {
 					networkOrigin = network;
 					network = null;
@@ -106,7 +108,9 @@ public class MoeaUtil implements Serializable{
 			obj2.getEvaluacion(networkOrigin);
 			if(mapearNodos(mat, parameters, networkOrigin)!=1){
 				//System.out.println("retorne null en mapearNodos objetivo3");
-				return null;
+				//return null;
+				solucion.setRechazo(1);
+				return solucion;
 			}
 			obj3.getEvaluacion(networkOrigin);
 			obj4.getEvaluacion(networkOrigin);

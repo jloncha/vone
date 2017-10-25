@@ -1,14 +1,10 @@
 package py.una.pol.vone;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 
-import py.una.pol.vone.kshortestpath.Path;
 import py.una.pol.vone.nsga.SolucionMoea;
 import py.una.pol.vone.nsga.VoneNsgaII;
 import py.una.pol.vone.simulator.model.SustrateEdge;
@@ -44,7 +40,7 @@ public class AlgoritmoNSGA {
 		//System.out.println(redVirtual.hashCode());
 		int resp = 1;
 		VoneNsgaII nsga = new VoneNsgaII();
-		nsga.cargarParametros(4, 3, 1, redFisica.getNroNodos(), redVirtual.getNroNodos(), redFisica, redVirtual, 2);
+		nsga.cargarParametros(4, 4, 1, redFisica.getNroNodos(), redVirtual.getNroNodos(), redFisica, redVirtual, 2);
 		try {
 			int intentos = 0;
 			
@@ -59,7 +55,7 @@ public class AlgoritmoNSGA {
 				Integer maxCPU = Integer.MIN_VALUE;
 				Double valSolucionOptima = new Double(String.valueOf(Integer.MAX_VALUE));
 				boolean[][] matrizFinal;
-				List<Path> listPath = new ArrayList<>();
+				//List<Path> listPath = new ArrayList<>();
 				
 				MoeaUtil util = new MoeaUtil();
 				
@@ -68,18 +64,18 @@ public class AlgoritmoNSGA {
 				
 				// Seteamos los valores del framework
 				NondominatedPopulation result = new Executor().withProblemClass(VoneNsgaII.class).withAlgorithm("NSGAII")
-						.withProperty("populationSize", 25).
-						withProperty("withReplacement", true)
+						.withProperty("populationSize", 50)
+						.withProperty("withReplacement", true)
 						.withProperty("operator", "hux+bf")
 						.withProperty("m", redVirtual.getNroNodos())
 						.withProperty("n", redFisica.getNroNodos())
 						// valor por defecto hux.rate 1
 						.withProperty("hux.rate", 1)
 						// valor por defecto 0.01
-						.withProperty("bf.rate", 0.01).
-						withMaxEvaluations(100).
-						distributeOnAllCores().run();
-				String solucionVariable = "";
+						.withProperty("bf.rate", 0.01)
+						.withMaxEvaluations(200)
+						.distributeOnAllCores().run();
+				//String solucionVariable = "";
 				valSolFinal = new double[result.size()];
 				for (int i = 0; i < result.size(); i++) {
 					Solution solution = result.get(i);
@@ -121,7 +117,7 @@ public class AlgoritmoNSGA {
 						double finalVal = Math.sqrt(Math.pow(objNormalizados[0], 2) + Math.pow(objNormalizados[1], 2)
 								+ Math.pow(objNormalizados[2], 2) + Math.pow(objNormalizados[3], 2));
 						valSolFinal[i] = finalVal;
-						solucionVariable = solution.getVariable(0).toString();
+						//solucionVariable = solution.getVariable(0).toString();
 					}
 				}
 				//Seleccionamos el menor valor, que sera nuestra solucion final (mas cercano al origen)
@@ -131,6 +127,8 @@ public class AlgoritmoNSGA {
 						posicionFinal = cont;
 					}
 				}
+				//si cumple esta condicion se verifica el motivo de los rechazos
+				
 				Solution solFinalElegida = result.get(posicionFinal);
 				SolucionMoea solucionMoea = (SolucionMoea)solFinalElegida.getAttribute("solucionMoea");
 				if (solucionMoea != null) {
@@ -162,6 +160,13 @@ public class AlgoritmoNSGA {
 					}
 					redVirtual.setMapeado(true);
 					break;
+				} else {
+					if(solFinalElegida.getConstraint(2) == 2){
+						resp = 1;
+					}
+					if(solFinalElegida.getConstraint(3) == 3){
+						resp = 2;
+					}
 				}
 				//System.out.println("Aumento intentos: " + intentos);
 				intentos++;

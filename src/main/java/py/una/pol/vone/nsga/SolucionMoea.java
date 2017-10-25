@@ -17,10 +17,12 @@ public class SolucionMoea implements Serializable {
 	private SustrateNetwork sustrateNetwork;
 	private List<VirtualEdge> virtualEdge;
 	List<Path> list;
+	private int rechazo = 0;
 	
 	
 	public SolucionMoea() {
 		super();
+		this.rechazo = 0;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -62,6 +64,16 @@ public class SolucionMoea implements Serializable {
 
 	public void setVirtualEdge(List<VirtualEdge> virtualEdge) {
 		this.virtualEdge = virtualEdge;
+	}
+
+
+	public int getRechazo() {
+		return rechazo;
+	}
+
+
+	public void setRechazo(int rechazo) {
+		this.rechazo = rechazo;
 	}
 
 }

@@ -17,7 +17,7 @@ public class VoneNsgaII extends AbstractProblem{
 	}*/
 	
 	public VoneNsgaII() {
-		super(1, 4, 3);
+		super(1, 4, 4);
 	}
 
 	public void cargarParametros(Integer nroObjetivos, Integer nroRestricciones, Integer nroVariable,
@@ -65,28 +65,53 @@ public class VoneNsgaII extends AbstractProblem{
 		//obtener las funciones
 		boolean band = false;
 		restricciones = util.getContrains(mat, parameters);
-		for (int i = 0; i < restricciones.length - 1; i++) {
+		for (int i = 0; i < restricciones.length - 2; i++) {
 			if(restricciones[i] != 0 ){
 				band = true;
 			}
 		}
-		
+		//en caso de que cumpla las restricciones de un uno solo por fila y
+		//un uno o cero por columna invoca al getfuncions
 		if(!band){
 			
 			solucion = util.getFuncions(mat, parameters, sustrate, virtualNetwork);
 			//System.out.println(parameters.getRedSustrato());
 			
-		} else {
-			solucion = null;
-		}
+		} /*else {
+			//solucion = null;
+		}*/
+		//no cumple las 2 primeras restricciones
 		if(solucion == null){
 			double[] notValue = new double[parameters.getNroObjetivos()];
 			for (int i = 0; i < parameters.getNroObjetivos(); i++) {
 				notValue[i] = Double.MAX_VALUE;
 			}
 			solution.setObjectives(notValue);
-		}else{
+		}
+		//rechazo de cpu
+		else if(solucion.getRechazo() == 1){
+			double[] notValue = new double[parameters.getNroObjetivos()];
+			for (int i = 0; i < parameters.getNroObjetivos(); i++) {
+				notValue[i] = Double.MAX_VALUE -1.0;
+			}
+			solution.setObjectives(notValue);
+			restricciones[2] = 2;
+			restricciones[3] = 0;
+			//System.out.println("cpu");
+		//rechazo por enlace
+		} else if(solucion.getRechazo() == 2){
+			double[] notValue = new double[parameters.getNroObjetivos()];
+			for (int i = 0; i < parameters.getNroObjetivos(); i++) {
+				notValue[i] = Double.MAX_VALUE - 1.0;
+			}
+			solution.setObjectives(notValue);
+			restricciones[3] = 3;
+			restricciones[2] = 0;
+			//System.out.println("enlace");
+		}
+		else{
 			solution.setObjectives(solucion.getFunctions());
+			restricciones[parameters.getNroRestricciones() - 2] = 0;
 			restricciones[parameters.getNroRestricciones() - 1] = 0;
 			solution.setAttribute("sustrateOriginal", parameters.getRedSustrato());
 			/*solution.setAttribute("sustrateMapeada", solucion.getSustrateNetwork());
