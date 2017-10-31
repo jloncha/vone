@@ -126,7 +126,8 @@ public class Rmsa {
 	           Map.Entry mentry = (Map.Entry)iterator.next();
 	           //System.out.print("key is: "+ mentry.getKey() + " & Value is: ");
 	           //System.out.println(mentry.getValue());
-	           valorActual = (double) ((( map.get(mentry.getKey()).get(4) * slotRequerido) + map.get(mentry.getKey()).get(1) 
+	           valorActual = (double) ((( map.get(mentry.getKey()).get(4) * slotRequerido * map.get(mentry.getKey()).get(4)) 
+	        		   + map.get(mentry.getKey()).get(1) 
 	        		   +  map.get(mentry.getKey()).get(2))/(double) map.get(mentry.getKey()).get(3));
 	           //System.out.println(valorActual);
 	           if(minValue > valorActual){
