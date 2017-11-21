@@ -14,6 +14,7 @@ public class MainVone2 {
 		SustrateNetwork network = cargarRed.redFisica;
 		VirtualNetwork virtualNetwork = cargarRed.redVirtual;
 		int resp = nsga.moeaDinamico(network, virtualNetwork);
+		System.out.println(network);
 		System.out.println(virtualNetwork);
 		System.out.println("Respuesta " + resp);
 	}

@@ -102,7 +102,7 @@ public class VoneNsgaII extends AbstractProblem{
 		} else if(solucion.getRechazo() == 2){
 			double[] notValue = new double[parameters.getNroObjetivos()];
 			for (int i = 0; i < parameters.getNroObjetivos(); i++) {
-				notValue[i] = Double.MAX_VALUE - 1.0;
+				notValue[i] = Double.MAX_VALUE - 500.00;
 			}
 			solution.setObjectives(notValue);
 			restricciones[3] = 3;

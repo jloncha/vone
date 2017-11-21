@@ -32,13 +32,13 @@ public class CargarRed {
 		
 		VirtualNode nodo1 = new VirtualNode("A",0, 3);
 		VirtualNode nodo2 = new VirtualNode("B",1, 2);
-		VirtualNode nodo3 = new VirtualNode("C",2, 3);
-		VirtualNode nodo4 = new VirtualNode("D",3, 2);
+		//VirtualNode nodo3 = new VirtualNode("C",2, 3);
+		//VirtualNode nodo4 = new VirtualNode("D",3, 2);
 		
 		VirtualEdge enlace1 = new VirtualEdge(4, "A-B", 2);
-		VirtualEdge enlace2 = new VirtualEdge(5, "B-C", 2);
-		VirtualEdge enlace3 = new VirtualEdge(6, "C-A", 2);
-		VirtualEdge enlace4 = new VirtualEdge(7, "D-C", 2);
+		//VirtualEdge enlace2 = new VirtualEdge(5, "B-C", 2);
+		//VirtualEdge enlace3 = new VirtualEdge(6, "C-A", 2);
+		//VirtualEdge enlace4 = new VirtualEdge(7, "D-C", 2);
 		/*SustrateNode nodof1 = new SustrateNode(0, "1", 50);
 		SustrateNode nodof2 = new SustrateNode(1, "2", 50);
 		SustrateNode nodof3 = new SustrateNode(2, "3", 50);
@@ -64,30 +64,30 @@ public class CargarRed {
 		enlacef5.setNodoDos(nodof2);*/
 		enlace1.setNodoUno(nodo1);
 		enlace1.setNodoDos(nodo2);
-		enlace2.setNodoUno(nodo2);
+		/*enlace2.setNodoUno(nodo2);
 		enlace2.setNodoDos(nodo3);
 		enlace3.setNodoUno(nodo1);
 		enlace3.setNodoDos(nodo3);
 		enlace4.setNodoDos(nodo3);
-		enlace4.setNodoUno(nodo4);
+		enlace4.setNodoUno(nodo4);*/
 		
 		nodo1.getAdyacentes().add(enlace1);
-		nodo1.getAdyacentes().add(enlace3);
+		//nodo1.getAdyacentes().add(enlace3);
 		nodo2.getAdyacentes().add(enlace1);
-		nodo2.getAdyacentes().add(enlace2);
+		/*nodo2.getAdyacentes().add(enlace2);
 		nodo3.getAdyacentes().add(enlace2);
 		nodo3.getAdyacentes().add(enlace3);
 		nodo3.getAdyacentes().add(enlace4);
-		nodo4.getAdyacentes().add(enlace4);
+		nodo4.getAdyacentes().add(enlace4);*/
 		
 		enlaces.add(enlace1);
-		enlaces.add(enlace2);
+		/*enlaces.add(enlace2);
 		enlaces.add(enlace3);
-		enlaces.add(enlace4);
+		enlaces.add(enlace4);*/
 		nodos.add(nodo1);
 		nodos.add(nodo2);
-		nodos.add(nodo3);
-		nodos.add(nodo4);
+		/*nodos.add(nodo3);
+		nodos.add(nodo4);*/
 		//Adjacentes
 		/*nodof1.getAdyacentes().add(enlacef1); 
 		nodof1.getAdyacentes().add(enlacef4);
@@ -253,9 +253,9 @@ public class CargarRed {
 			  					sustrateEdge.getFrequencySlot()[1] = false;	
 						  		sustrateEdge.getFrequencySlot()[2] = false;
 						  		sustrateEdge.getFrequencySlot()[3] = false;
-						  		sustrateEdge.getFrequencySlot()[4] = true;
-						  		sustrateEdge.getFrequencySlot()[5] = true;
-						  		sustrateEdge.getFrequencySlot()[6] = true;
+						  		sustrateEdge.getFrequencySlot()[4] = false;
+						  		sustrateEdge.getFrequencySlot()[5] = false;
+						  		sustrateEdge.getFrequencySlot()[6] = false;
 						  		sustrateEdge.getFrequencySlot()[7] = false;
 						  		sustrateEdge.getFrequencySlot()[8] = false;
 						  		sustrateEdge.getFrequencySlot()[9] = false;

@@ -42,9 +42,9 @@ public class AlgoritmoNSGA {
 		VoneNsgaII nsga = new VoneNsgaII();
 		nsga.cargarParametros(4, 4, 1, redFisica.getNroNodos(), redVirtual.getNroNodos(), redFisica, redVirtual, 2);
 		try {
-			int intentos = 0;
+			//int intentos = 0;
 			
-			while(intentos < 5){
+			//while(intentos < 5){
 				double[] valSolFinal;
 				
 				Integer posicionFinal = 0;
@@ -53,7 +53,7 @@ public class AlgoritmoNSGA {
 				double sum = 0.0;
 				Integer cantFSUtilizado = 0;
 				Integer maxCPU = Integer.MIN_VALUE;
-				Double valSolucionOptima = new Double(String.valueOf(Integer.MAX_VALUE));
+				Double valSolucionOptima = Double.MAX_VALUE;
 				boolean[][] matrizFinal;
 				//List<Path> listPath = new ArrayList<>();
 				
@@ -159,7 +159,7 @@ public class AlgoritmoNSGA {
 						}
 					}
 					redVirtual.setMapeado(true);
-					break;
+					//break;
 				} else {
 					if(solFinalElegida.getConstraint(2) == 2){
 						resp = 1;
@@ -169,10 +169,10 @@ public class AlgoritmoNSGA {
 					}
 				}
 				//System.out.println("Aumento intentos: " + intentos);
-				intentos++;
-				result = null;
+				//intentos++;
+				//result = null;
 				
-			}
+			//}
 			
 			
 			//System.out.println(redVirtual);
