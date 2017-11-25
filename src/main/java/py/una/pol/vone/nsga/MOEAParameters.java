@@ -20,6 +20,10 @@ public class MOEAParameters implements Serializable{
 	private Integer kshort;
 	private SustrateNetwork redSustrato;
 	private VirtualNetwork redVirtual;
+	private Boolean obj1;
+	private Boolean obj2;
+	private Boolean obj3;
+	private Boolean obj4;
 	
 	public MOEAParameters() {
 		super();
@@ -27,7 +31,7 @@ public class MOEAParameters implements Serializable{
 	}
 
 	public MOEAParameters(Integer nroObjetivos, Integer nroRestricciones, Integer nroVariableDecision,
-			Integer nodosFisicos, Integer nodosVirtuales, Integer kshort) {
+			Integer nodosFisicos, Integer nodosVirtuales, Integer kshort, Boolean obj1, Boolean obj2, Boolean obj3, Boolean obj4) {
 		super();
 		this.nroObjetivos = nroObjetivos;
 		this.nroRestricciones = nroRestricciones;
@@ -35,6 +39,10 @@ public class MOEAParameters implements Serializable{
 		this.nodosFisicos = nodosFisicos;
 		this.nodosVirtuales = nodosVirtuales;
 		this.kshort = kshort;
+		this.obj1 = obj1;
+		this.obj2 = obj2;
+		this.obj3 = obj3;
+		this.obj4 = obj4;
 	}
 
 	public Integer getNroObjetivos() {
@@ -100,5 +108,38 @@ public class MOEAParameters implements Serializable{
 	public void setKshort(Integer kshort) {
 		this.kshort = kshort;
 	}
+
+	public Boolean getObj1() {
+		return obj1;
+	}
+
+	public void setObj1(Boolean obj1) {
+		this.obj1 = obj1;
+	}
+
+	public Boolean getObj2() {
+		return obj2;
+	}
+
+	public void setObj2(Boolean obj2) {
+		this.obj2 = obj2;
+	}
+
+	public Boolean getObj3() {
+		return obj3;
+	}
+
+	public void setObj3(Boolean obj3) {
+		this.obj3 = obj3;
+	}
+
+	public Boolean getObj4() {
+		return obj4;
+	}
+
+	public void setObj4(Boolean obj4) {
+		this.obj4 = obj4;
+	}
+	
 	
 }

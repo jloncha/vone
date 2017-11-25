@@ -101,28 +101,44 @@ public class MoeaUtil implements Serializable{
 		}
 		
 		double[] resp = new double[parameters.getNroObjetivos()];
-		Objetivo2 obj2 = new Objetivo2();
-		Objetivo3 obj3 = new Objetivo3();
-		Objetivo4 obj4 = new Objetivo4();
+		int valorObjetivo = 0;
 		try {
-			obj2.getEvaluacion(networkOrigin);
+			
+			if(parameters.getObj1()){
+				resp[valorObjetivo] = rmsa.getEvaluatefuntion1();
+				valorObjetivo++;
+			}
+			if(parameters.getObj2()){
+				Objetivo2 obj2 = new Objetivo2();
+				obj2.getEvaluacion(networkOrigin);
+				resp[valorObjetivo] = obj2.getFitness();
+				valorObjetivo++;
+			}
 			if(mapearNodos(mat, parameters, networkOrigin)!=1){
 				//System.out.println("retorne null en mapearNodos objetivo3");
 				//return null;
 				solucion.setRechazo(1);
 				return solucion;
 			}
-			obj3.getEvaluacion(networkOrigin);
-			obj4.getEvaluacion(networkOrigin);
+			if(parameters.getObj3()){
+				Objetivo3 obj3 = new Objetivo3();
+				obj3.getEvaluacion(networkOrigin);
+				resp[valorObjetivo] = obj3.getFitness();
+				valorObjetivo++;
+			}
+			if(parameters.getObj4()){
+				Objetivo4 obj4 = new Objetivo4();
+				obj4.getEvaluacion(networkOrigin);
+				resp[valorObjetivo] = obj4.getFitness();
+				valorObjetivo++;
+			}
+			
+			
 			//System.out.println("red al mapear todos los enlaces: " + parameters.getRedSustrato());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		resp[0] = rmsa.getEvaluatefuntion1();
-		resp[1] = obj2.getFitness();
-		resp[2] = obj3.getFitness();
-		resp[3] = obj4.getFitness();
 		
 		solucion.setFunctions(resp);
 		solucion.setSustrateNetwork(networkOrigin);
@@ -198,7 +214,7 @@ public class MoeaUtil implements Serializable{
 		try{
 			for (int i = 0; i < parameters.getNodosVirtuales(); i++) {
 				for (int j = 0; j < parameters.getNodosFisicos(); j++) {
-					//Significa que exta mapeado
+					//Significa que esta mapeado
 					if(mat[i][j]){
 						cpuV = parameters.getRedVirtual().getNodosVirtuales().get(i).getCapacidadCPU();
 						cpuF = network.getNodosFisicos().get(j).capacidadActual();

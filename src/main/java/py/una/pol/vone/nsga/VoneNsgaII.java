@@ -22,7 +22,7 @@ public class VoneNsgaII extends AbstractProblem{
 
 	public void cargarParametros(Integer nroObjetivos, Integer nroRestricciones, Integer nroVariable,
 			Integer nodosFisicos, Integer nodosVirtuales, SustrateNetwork network, VirtualNetwork virtualNetwork, 
-			Integer kshort){
+			Integer kshort, Boolean obj1, Boolean obj2, Boolean obj3, Boolean obj4){
 		parameters = new MOEAParameters();
 		parameters.setNodosFisicos(nodosFisicos);
 		parameters.setNodosVirtuales(nodosVirtuales);
@@ -32,6 +32,10 @@ public class VoneNsgaII extends AbstractProblem{
 		parameters.setRedSustrato(network);
 		parameters.setRedVirtual(virtualNetwork);
 		parameters.setKshort(kshort);
+		parameters.setObj1(obj1);
+		parameters.setObj2(obj2);
+		parameters.setObj3(obj3);
+		parameters.setObj4(obj4);
 	}
 	
 	@Override
@@ -62,7 +66,7 @@ public class VoneNsgaII extends AbstractProblem{
 			ex.printStackTrace();
 		}
 		
-		//obtener las funciones
+		//obtener las restricciones
 		boolean band = false;
 		restricciones = util.getContrains(mat, parameters);
 		for (int i = 0; i < restricciones.length - 2; i++) {

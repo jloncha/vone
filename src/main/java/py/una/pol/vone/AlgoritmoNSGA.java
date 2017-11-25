@@ -33,14 +33,14 @@ public class AlgoritmoNSGA {
 	 * Metodo principal que recibe la red virtual y la red fisica para resolver
 	 * @param redFisica	red fisica sustrato
 	 * @param redVirtual la red que se va a mapear
-	 * @return 0 si fue mapeado, 1 caso contrario
+	 * @return 0 si fue mapeado, 1 caso de falta de cpu, 2 en caso de falta en enlaces
 	 */
 	public static int moeaDinamico(SustrateNetwork redFisica, VirtualNetwork redVirtual) {
 		//System.out.println("*******************INICIA**********************");
 		//System.out.println(redVirtual.hashCode());
 		int resp = 1;
 		VoneNsgaII nsga = new VoneNsgaII();
-		nsga.cargarParametros(4, 4, 1, redFisica.getNroNodos(), redVirtual.getNroNodos(), redFisica, redVirtual, 2);
+		nsga.cargarParametros(4, 4, 1, redFisica.getNroNodos(), redVirtual.getNroNodos(), redFisica, redVirtual, 2, true, true, true, true);
 		try {
 			//int intentos = 0;
 			
@@ -103,7 +103,7 @@ public class AlgoritmoNSGA {
 								}
 							}
 						}
-						// Normalizacion de los valores de la funcion objetivo 
+						// Normalizacion de los valores de la funcion objetivo de acuerdo al objetivo seleccionado
 						// Normalizacion de la primera funcion objetivo (uso de enlaces)
 						objNormalizados[0] = (objectives[0] / (redFinal.getEnlacesFisicos().size() * sum));
 						// Normalizacion del segundo objetivo (fragmentacion)
@@ -132,7 +132,7 @@ public class AlgoritmoNSGA {
 				Solution solFinalElegida = result.get(posicionFinal);
 				SolucionMoea solucionMoea = (SolucionMoea)solFinalElegida.getAttribute("solucionMoea");
 				if (solucionMoea != null) {
-					SustrateNetwork redFinalEleg = solucionMoea.getSustrateNetwork();
+					//SustrateNetwork redFinalEleg = solucionMoea.getSustrateNetwork();
 					resp = 0;
 					//Procedemos a asignar los valores en la red virtual
 					matrizFinal =util.generateMat(EncodingUtils.getBinary(solFinalElegida.getVariable(0)), redVirtual.getNodosVirtuales().size(), redFisica.getNodosFisicos().size());

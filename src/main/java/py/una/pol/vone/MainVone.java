@@ -25,7 +25,7 @@ public class MainVone {
 		
 		VoneNsgaII nsga = new VoneNsgaII();
 		nsga.cargarParametros(4, 3, 1, network.getNroNodos(), virtualNetwork.getNroNodos(), network, virtualNetwork,
-				2);
+				2, true, true, true, true);
 		
 		NondominatedPopulation result = new Executor()
 				.withProblemClass(VoneNsgaII.class)

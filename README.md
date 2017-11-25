@@ -11,4 +11,7 @@ El algoritmo evolutivo resuelve el problema del vone teniendo como representacio
 1. Una sola (X)
 
 *funciones objetivo
-1. 
+1. costo
+2. fragmentacion
+3. balance de cpu
+4. balance de red
