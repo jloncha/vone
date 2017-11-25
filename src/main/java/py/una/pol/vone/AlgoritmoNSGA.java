@@ -38,7 +38,7 @@ public class AlgoritmoNSGA {
 	public static int moeaDinamico(SustrateNetwork redFisica, VirtualNetwork redVirtual) {
 		//System.out.println("*******************INICIA**********************");
 		//System.out.println(redVirtual.hashCode());
-		int resp = 1;
+		int resp = 2;
 		VoneNsgaII nsga = new VoneNsgaII();
 		nsga.cargarParametros(4, 4, 1, redFisica.getNroNodos(), redVirtual.getNroNodos(), redFisica, redVirtual, 2, true, true, true, true);
 		try {
@@ -162,7 +162,7 @@ public class AlgoritmoNSGA {
 					//break;
 				} else {
 					if(solFinalElegida.getConstraint(2) == 2){
-						resp = 1;
+					resp = 1;
 					}
 					if(solFinalElegida.getConstraint(3) == 3){
 						resp = 2;

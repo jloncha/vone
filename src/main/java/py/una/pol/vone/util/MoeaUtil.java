@@ -219,8 +219,7 @@ public class MoeaUtil implements Serializable{
 						cpuV = parameters.getRedVirtual().getNodosVirtuales().get(i).getCapacidadCPU();
 						cpuF = network.getNodosFisicos().get(j).capacidadActual();
 						if (cpuV <=cpuF) {
-							network.getNodosFisicos().get(j).asignarRecursoCPU(cpuV);;
-							
+							network.getNodosFisicos().get(j).asignarRecursoCPU(cpuV);
 						}
 						else{
 							return -1;

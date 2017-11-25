@@ -34,7 +34,7 @@ public class AlgoritmoNSGA14 {
 	 *         enlaces
 	 */
 	public static int moeaDinamico(SustrateNetwork redFisica, VirtualNetwork redVirtual) {
-		int resp = 1;
+		int resp = 2;
 		VoneNsgaII nsga = new VoneNsgaII();
 		nsga.cargarParametros(2, 4, 1, redFisica.getNroNodos(), redVirtual.getNroNodos(), redFisica, redVirtual, 2,
 				true, false, false, true);

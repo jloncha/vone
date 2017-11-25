@@ -30,7 +30,7 @@ public class AlgoritmoNSGA12 {
 	 * @return 0 si fue mapeado, 1 caso de falta de cpu, 2 en caso de falta en enlaces
 	 */
 	public static int moeaDinamico(SustrateNetwork redFisica, VirtualNetwork redVirtual) {
-		int resp = 1;
+		int resp = 2;
 		VoneNsgaII nsga = new VoneNsgaII();
 		nsga.cargarParametros(2, 4, 1, redFisica.getNroNodos(), redVirtual.getNroNodos(), redFisica, redVirtual, 2,
 				true, true, false, false);
